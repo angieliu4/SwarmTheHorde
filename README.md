@@ -14,3 +14,6 @@ Evolution system, EXP drops.
 
 ##### Planned Features: 
 At least 6 different forms for each character, at least five enemy types, fully functioning and aesthetic UI, custom sprites for all assets.
+
+##### Mock Up:
+![MockUp](https://github.com/angieliu4/SwarmTheHorde/blob/main/images/MockUp.png?raw=true)
