@@ -17,3 +17,6 @@ At least 6 different forms for each character, at least five enemy types, fully 
 
 ##### *Mock Up*:
 ![MockUp](https://github.com/angieliu4/SwarmTheHorde/blob/main/images/MockUp.png?raw=true)
+
+##### *UML:*
+![UML](https://github.com/angieliu4/SwarmTheHorde/blob/main/images/STHUML.png?raw=true)
