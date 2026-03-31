@@ -1,2 +1,2 @@
-# SwarmTheHorde
-A repository for the game Swarm the Horde!
+# Swarm the Horde
+#### Humanity's last chances are... guinea pigs!?
