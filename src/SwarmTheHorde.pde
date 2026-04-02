@@ -29,6 +29,7 @@ void setup() {
 }
 
 void draw() {
+  //screen manager
   switch (screen) {
     case "game":
       gameScreen();
@@ -39,6 +40,7 @@ void draw() {
 void startScreen() {}
 
 void gameScreen() {
+  //where everything in the game is running
   background(255);
   
   //gamebar
@@ -57,11 +59,14 @@ void gameScreen() {
 
 void settingsScreen() {}
 
+void pauseScreen() {}
+
 void gameOver() {}
 
 void win() {}
 
 void keyPressed() {
+  //player movement
   if (key == 'a' || keyCode == LEFT) {
     player.isMovingLeft = true;
   }
