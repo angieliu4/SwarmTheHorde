@@ -2,7 +2,7 @@
 
 class Player {
   float x, y, w, h, speed;
-  int health = 100;
+  float health = 100;
   int maxHealth = 100;
 
   boolean isMovingLeft, isMovingRight, isMovingUp, isMovingDown;
@@ -16,6 +16,8 @@ class Player {
    
     isMovingLeft = false;
     isMovingRight = false;
+    isMovingUp = false;
+    isMovingDown = false;
     
   }
 
