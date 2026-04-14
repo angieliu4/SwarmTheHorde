@@ -4,14 +4,14 @@
 String screen = "game"; //title, game, settings, lose, win
 
 //timer
-int time = 60;
+int wave = 1;
 int level = 1;
 
 //player
 Player player;
 
 //enemies
-Enemy enemy;
+Enemy enemy1, enemy2, enemy3;
 
 void setup() {
   size(1200, 1000);
@@ -25,7 +25,9 @@ void setup() {
   player = new Player(600, 500, 100, 100);
   
   //setup enemies
-  enemy = new Enemy(200, 200, 60, 60);
+  enemy1 = new Enemy(200, 200, "red");
+  enemy2 = new Enemy(400, 1000, "blue");
+  enemy3 = new Enemy(1000, 100, "green");
 }
 
 void draw() {
@@ -48,12 +50,14 @@ void gameScreen() {
   rect(600, 50, 1200, 100);
   
   fill(255);
-  textSize(75);
-  text(time, 100, 40);
+  textSize(60);
+  text("Wave: " + wave, 150, 40);
   text("Level: " + level, 600, 40);
  
   player.display();
-  enemy.display();
+  enemy1.display();
+  enemy2.display();
+  enemy3.display();
  
 }
 
