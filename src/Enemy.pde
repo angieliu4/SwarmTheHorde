@@ -53,7 +53,7 @@ class Enemy {
 
   boolean intersect(Player p) {
     float d = dist(x, y, p.x, p.y);
-    //checks if the edges of the hitboxes for enemy and player are collding
+    //checks if the edges of the hitboxes for enemy and player are colliding
     //w and h are the hitbox for the enemy, p.w and p.h are the hitbox for the player
     if (d < (w/2 + p.w/2) && d < (h/2 + p.h/2)) {
       speed = 0;
