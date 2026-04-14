@@ -7,7 +7,7 @@ class Enemy {
     this.x = x;
     this.y = y;
     this.type = type;
-    //speed is set in the intersect function down below
+    //speed is set in the intersect method down below
 
     if (type == "red") {
       w = 60;
