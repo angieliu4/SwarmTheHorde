@@ -3,9 +3,13 @@
 //screens
 String screen = "game"; //title, game, settings, lose, win
 
-//timer
+//waves and player level
 int wave = 1;
 int level = 1;
+
+//game over switch and pause switch
+boolean isGameOver = false;
+boolean isPaused = false;
 
 //player
 Player player;
@@ -20,10 +24,10 @@ void setup() {
   textAlign(CENTER, CENTER);
   textMode(CENTER);
   rectMode(CENTER);
-  
+
   //set up player
   player = new Player(600, 500, 100, 100);
-  
+
   //setup enemies
   enemy1 = new Enemy(200, 200, "red");
   enemy2 = new Enemy(400, 1000, "blue");
@@ -33,41 +37,67 @@ void setup() {
 void draw() {
   //screen manager
   switch (screen) {
-    case "game":
-      gameScreen();
-      break;
+  case "game":
+    gameScreen();
+    if (isGameOver) {
+      gameOver();
+    }
+    break;
   }
 }
 
-void startScreen() {}
+void startScreen() {
+}
 
 void gameScreen() {
   //where everything in the game is running
+  //only runs if the game isn't over or paused
+  if (isGameOver == false && isPaused == false) {
+    background(255);
+
+    //gamebar
+    fill(#fccce9);
+    rect(600, 50, 1200, 100);
+
+    fill(255);
+    textSize(60);
+    text("Wave: " + wave, 150, 40);
+    text("Level: " + level, 600, 40);
+
+    if (player.health <= 0) {
+      isGameOver = true;
+    }
+
+    player.display();
+    enemy1.display();
+    enemy2.display();
+    enemy3.display();
+  }
+}
+
+void settingsScreen() {
+}
+
+void pauseScreen() {
+}
+
+void gameOver() {
   background(255);
-  
-  //gamebar
+
   fill(#fccce9);
   rect(600, 50, 1200, 100);
-  
+
   fill(255);
   textSize(60);
   text("Wave: " + wave, 150, 40);
   text("Level: " + level, 600, 40);
- 
-  player.display();
-  enemy1.display();
-  enemy2.display();
-  enemy3.display();
- 
+  
+  fill(0);
+  text("You died!", 600, 300);
 }
 
-void settingsScreen() {}
-
-void pauseScreen() {}
-
-void gameOver() {}
-
-void win() {}
+void win() {
+}
 
 void keyPressed() {
   //player movement
