@@ -13,19 +13,18 @@ class Player {
     this.w = w;
     this.h = h;
     speed = 10;
-   
+
     isMovingLeft = false;
     isMovingRight = false;
     isMovingUp = false;
     isMovingDown = false;
-    
   }
 
   void display() {
     //placeholder
     fill(255, 0, 0);
     ellipse(x, y, w, h);
-    
+
     drawHealthBar();
     move();
   }
@@ -36,17 +35,17 @@ class Player {
     if (isMovingRight) x += speed;
     if (isMovingUp) y -= speed;
     if (isMovingDown) y += speed;
-    
-    if(x + w/2 >= width) {
+
+    if (x + w/2 >= width) {
       x = width - w/2;
-    } 
+    }
     if (x - w/2 <= 0) {
       x = 0 + w/2;
-    } 
+    }
     if (y - h/2 <= 100) {
       y = 100 + w/2;
     }
-   if (y + h/2 >= height) {
+    if (y + h/2 >= height) {
       y = height - w/2;
     }
   }
@@ -58,5 +57,8 @@ class Player {
     fill(0, 255, 0);
     rect(x, y + 65, health, 10);
   }
-
-  }
+  
+  //boolean fire() {
+    
+  //}
+}

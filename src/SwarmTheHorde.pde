@@ -11,11 +11,17 @@ int level = 1;
 boolean isGameOver = false;
 boolean isPaused = false;
 
+//timers
+Timer pTime;
+
 //player
 Player player;
 
 //enemies
 Enemy enemy1, enemy2, enemy3;
+
+//projectiles
+ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
 
 void setup() {
   size(1200, 1000);
@@ -32,6 +38,11 @@ void setup() {
   enemy1 = new Enemy(200, 200, "red");
   enemy2 = new Enemy(400, 1000, "blue");
   enemy3 = new Enemy(1000, 100, "green");
+  
+  //setup timers
+  pTime = new Timer(500);
+  pTime.start();
+  
 }
 
 void draw() {
@@ -66,6 +77,26 @@ void gameScreen() {
 
     if (player.health <= 0) {
       isGameOver = true;
+    }
+    
+    //player projectiles
+    
+    if (pTime.isFinished()) {
+      projectiles.add(new Projectile(player.x, player.y, enemy1.x, enemy1.y));
+      println(projectiles.size());
+      pTime.start();
+    }
+    
+    for (int i = 0; i < projectiles.size(); i++) {
+      Projectile pjct = projectiles.get(i);
+      
+      //temp until better solution
+      if(pjct.intersect(enemy1)) {
+        projectiles.remove(pjct);
+      }
+      
+      pjct.display();
+      pjct.move();
     }
 
     player.display();
