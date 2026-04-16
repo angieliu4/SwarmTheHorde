@@ -17,11 +17,29 @@ class Projectile {
   void display() {
     fill(#7242f5);
     ellipse(x, y, w, h);
+    update();
   }
 
-  void move() {
-    float d2Target = dist(x, y, tx, ty);
-    x = x + speed;
+  //void fire(float x, float y, float tx, float ty) {
+  //  float dx = tx - x;
+  //  float dy = ty - y;
+
+  //  float dist = sqrt(dx * dx + dy * dy);
+
+  // velocity x vx = (dx / dist) * 5;
+  // velocity y vy = (dy / dist) * 5;
+
+  //  px = sx;
+  //  py = sy;
+  //}
+
+  void update() {
+    float dx = enemy1.x - x;
+    float dy = enemy1.y - y;
+    float angle = atan2(dy, dx);
+
+    this.x += cos(angle) * speed;
+    this.y += sin(angle) * speed;
   }
 
   boolean intersect(Enemy e) {

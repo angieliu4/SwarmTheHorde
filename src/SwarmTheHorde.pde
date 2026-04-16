@@ -96,7 +96,6 @@ void gameScreen() {
       }
       
       pjct.display();
-      pjct.move();
     }
 
     player.display();
