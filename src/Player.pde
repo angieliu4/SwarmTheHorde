@@ -4,6 +4,7 @@ class Player {
   float x, y, w, h, speed;
   float health = 100;
   float exp = 0;
+  float maxExp = 100;
   int maxHealth = 100;
 
   boolean isMovingLeft, isMovingRight, isMovingUp, isMovingDown;

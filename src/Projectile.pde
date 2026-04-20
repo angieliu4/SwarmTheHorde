@@ -3,6 +3,7 @@
 class Projectile {
   float x, y, w, h, tx, ty, speed, damage;
 
+
   Projectile(float x, float y, float tx, float ty) {
     this.x = x;
     this.y = y;
@@ -34,12 +35,11 @@ class Projectile {
   //}
 
   void update() {
-    float dx = enemy1.x - x;
-    float dy = enemy1.y - y;
-    float angle = atan2(dy, dx);
-
-    this.x += cos(angle) * speed;
-    this.y += sin(angle) * speed;
+      float dx = mouseX - x;
+      float dy = mouseY - y;
+      float angle = atan2(dy, dx);
+      this.x += cos(angle) * speed;
+      this.y += sin(angle) * speed;
   }
 
   boolean intersect(Enemy e) {

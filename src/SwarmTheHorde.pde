@@ -11,17 +11,23 @@ int level = 1;
 boolean isGameOver = false;
 boolean isPaused = false;
 
+//random enemy generation
+int randEnemy;
+
 //timers
-Timer pTime;
+Timer pTime, enemyTime, waveTime;
 
 //player
 Player player;
 
 //enemies
-Enemy enemy1, enemy2, enemy3;
+ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 
 //projectiles
 ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
+
+//exp
+ArrayList<Exp> exps = new ArrayList<Exp>();
 
 void setup() {
   size(1200, 1000);
@@ -34,15 +40,15 @@ void setup() {
   //set up player
   player = new Player(600, 500, 100, 100);
 
-  //setup enemies
-  enemy1 = new Enemy(200, 200, "red");
-  enemy2 = new Enemy(400, 1000, "blue");
-  enemy3 = new Enemy(1000, 100, "green");
-  
   //setup timers
   pTime = new Timer(500);
   pTime.start();
+
+  enemyTime = new Timer(2000);
+  enemyTime.start();
   
+  waveTime = new Timer(60000);
+  waveTime.start();
 }
 
 void draw() {
@@ -78,30 +84,75 @@ void gameScreen() {
     if (player.health <= 0) {
       isGameOver = true;
     }
-    
-    //player projectiles
-    
-    if (pTime.isFinished()) {
-      projectiles.add(new Projectile(player.x, player.y, enemy1.x, enemy1.y));
-      println(projectiles.size());
-      pTime.start();
-    }
-    
-    for (int i = 0; i < projectiles.size(); i++) {
-      Projectile pjct = projectiles.get(i);
-      
-      //temp until better solution
-      if(pjct.intersect(enemy1)) {
-        projectiles.remove(pjct);
+
+    //random enemy spawning, each enemy is weighted different, sometimes doesn't spawn an enemy
+    if (enemyTime.isFinished()) {
+      randEnemy = (int)random(0, 10);
+      if (randEnemy == 1 || randEnemy == 2 || randEnemy == 3 || randEnemy == 4) {
+        enemies.add(new Enemy(1300, 200, "red"));
+      } else if (randEnemy == 5 || randEnemy == 6 || randEnemy == 7) {
+        enemies.add(new Enemy(1300, 200, "blue"));
+      } else if (randEnemy == 8 || randEnemy == 9) {
+        enemies.add(new Enemy(1300, 200, "green"));
+      } else {
       }
-      
-      pjct.display();
+      enemyTime.start();
     }
 
+    //rendering enemies
+    for (int j = 0; j < enemies.size(); j++) {
+      Enemy enemy = enemies.get(j);
+      enemy.display();
+    }
+
+    //spawning player projectiles when timer has ended
+    if (pTime.isFinished()) {
+      projectiles.add(new Projectile(player.x, player.y, mouseX, mouseY));
+      pTime.start();
+    }
+
+    //checking for enemy/projectile collision, projectile rendering, exp spawning
+    for (int i = 0; i < projectiles.size(); i++) {
+      Projectile pjct = projectiles.get(i);
+
+      for (int j = 0; j < enemies.size(); j++) {
+        //temp until better solution
+        Enemy enemy = enemies.get(j);
+        if (pjct.intersect(enemy)) {
+          if (enemy.health <= 0) {
+            exps.add(new Exp(enemy.x, enemy.y, "tier1"));
+            enemies.remove(enemy);
+          }
+          projectiles.remove(pjct);
+        }
+      }
+      pjct.display();
+    }
+    
+    //rendering exp
+    for (int k = 0; k < exps.size(); k++) {
+      Exp exp = exps.get(k);
+      if(exp.intersect(player)) {
+        exps.remove(exp);
+        println("Exp:" + player.exp);
+        if (player.exp >= player.maxExp) {
+          level += 1;
+          player.maxExp += 10;
+          player.exp = 0;
+          println("Max Exp:" + player.maxExp);
+        }
+      }
+      exp.display();
+    }
+    
+    //wave timer
+    if (waveTime.isFinished()) {
+      wave += 1;
+      waveTime.start();
+    }
+
+    //rendering player
     player.display();
-    enemy1.display();
-    enemy2.display();
-    enemy3.display();
   }
 }
 
@@ -121,7 +172,7 @@ void gameOver() {
   textSize(60);
   text("Wave: " + wave, 150, 40);
   text("Level: " + level, 600, 40);
-  
+
   fill(0);
   text("You died!", 600, 300);
 }

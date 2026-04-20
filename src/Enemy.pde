@@ -1,7 +1,7 @@
 class Enemy {
   float x, y, w, h, speed, damage;
   String type;
-  int health = 100;
+  int health;
 
   Enemy(float x, float y, String type) {
     this.x = x;
@@ -13,14 +13,17 @@ class Enemy {
       w = 60;
       h = 60;
       damage = 1;
+      health = 100;
     } else if (type == "blue") {
       w = 45;
       h = 45;
       damage = 0.5;
+      health = 75;
     } else if (type == "green") {
       w = 75;
       h = 75;
       damage = 2;
+      health = 150;
     }
   }
 
