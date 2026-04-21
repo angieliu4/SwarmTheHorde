@@ -2,6 +2,7 @@
 
 class Projectile {
   float x, y, w, h, tx, ty, speed, damage;
+  float vx, vy;
 
 
   Projectile(float x, float y, float tx, float ty) {
@@ -18,7 +19,15 @@ class Projectile {
   void display() {
     fill(#7242f5);
     ellipse(x, y, w, h);
-    update();
+    
+    float dx = tx;
+    float dy = ty;
+    float angle = atan2(dy, dx);
+    vx = cos(angle) * speed;
+    vy = sin(angle) * speed;
+    
+    x += vx;
+    y += vy;
   }
 
   //void fire(float x, float y, float tx, float ty) {
@@ -33,14 +42,6 @@ class Projectile {
   //  px = sx;
   //  py = sy;
   //}
-
-  void update() {
-      float dx = mouseX - x;
-      float dy = mouseY - y;
-      float angle = atan2(dy, dx);
-      this.x += cos(angle) * speed;
-      this.y += sin(angle) * speed;
-  }
 
   boolean intersect(Enemy e) {
     float d = dist(x, y, e.x, e.y);
