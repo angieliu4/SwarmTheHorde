@@ -1,4 +1,4 @@
-//Projectiles
+//Exp
 
 class Exp {
   float x, y, w, h, amount;

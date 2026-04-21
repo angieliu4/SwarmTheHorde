@@ -1,7 +1,7 @@
 //Main class
 
 //screens
-String screen = "game"; //title, game, settings, lose, win
+String screen = "title"; //title, game, settings, lose, win, pause
 
 //waves and player level
 int wave = 1;
@@ -29,6 +29,9 @@ ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
 //exp
 ArrayList<Exp> exps = new ArrayList<Exp>();
 
+//buttons
+Button btnStart, btnSettings, btnQuit, btnBack, btnMenu, btnRestart;
+
 void setup() {
   size(1200, 1000);
   background(255);
@@ -46,9 +49,17 @@ void setup() {
 
   enemyTime = new Timer(2000);
   enemyTime.start();
-  
+
   waveTime = new Timer(60000);
   waveTime.start();
+
+  //button setup, parameters in order are text, x position, y position, width, height, normal color, hovering color, text size
+  btnStart = new Button ("Start", 600, 500, 400, 100, #2f7542, #53b86e, 75);
+  btnSettings = new Button("Settings", 600, 625, 200, 50, #2f7542, #53b86e, 35);
+  btnQuit = new Button("Quit", 600, 700, 150, 50, #2f7542, #53b86e, 35);
+  btnBack = new Button("Back", 100, 50, 150, 50, #2f7542, #53b86e, 35);
+  btnRestart = new Button("Restart", 600, 500, 400, 100, #2f7542, #53b86e, 75);
+  btnMenu = new Button("Main Menu", 600, 625, 210, 50, #2f7542, #53b86e, 35);
 }
 
 void draw() {
@@ -56,14 +67,36 @@ void draw() {
   switch (screen) {
   case "game":
     gameScreen();
-    if (isGameOver) {
-      gameOver();
-    }
+    break;
+  case "title":
+    startScreen();
+    break;
+  case "settings":
+    settingsScreen();
+    break;
+  case "pause":
+    pauseScreen();
+    break;
+  case "lose":
+    gameOver();
     break;
   }
 }
 
 void startScreen() {
+  background(255);
+
+  fill(0);
+  textSize(100);
+  //temp
+  text("Swarm the Horde!", 600, 130);
+  textSize(30);
+  text("Humanity's last chances are... guinea pigs!?", 600, 225);
+
+  //rendering buttons
+  btnStart.display();
+  btnSettings.display();
+  btnQuit.display();
 }
 
 void gameScreen() {
@@ -73,6 +106,7 @@ void gameScreen() {
     background(255);
 
     //gamebar
+    noStroke();
     fill(#fccce9);
     rect(600, 50, 1200, 100);
 
@@ -83,6 +117,7 @@ void gameScreen() {
 
     if (player.health <= 0) {
       isGameOver = true;
+      screen = "lose";
     }
 
     //random enemy spawning, each enemy is weighted different, sometimes doesn't spawn an enemy
@@ -128,11 +163,11 @@ void gameScreen() {
       }
       pjct.display();
     }
-    
+
     //rendering exp, player level up
     for (int k = 0; k < exps.size(); k++) {
       Exp exp = exps.get(k);
-      if(exp.intersect(player)) {
+      if (exp.intersect(player)) {
         exps.remove(exp);
         println("Exp:" + player.exp);
         //player needs more exp to level up the higher their level is
@@ -145,7 +180,7 @@ void gameScreen() {
       }
       exp.display();
     }
-    
+
     //wave timer
     if (waveTime.isFinished()) {
       wave += 1;
@@ -158,6 +193,15 @@ void gameScreen() {
 }
 
 void settingsScreen() {
+  background(255);
+
+  fill(0);
+  textSize(100);
+  //temp
+  text("Settings", 600, 110);
+
+  //rendering buttons
+  btnBack.display();
 }
 
 void pauseScreen() {
@@ -166,19 +210,54 @@ void pauseScreen() {
 void gameOver() {
   background(255);
 
-  fill(#fccce9);
-  rect(600, 50, 1200, 100);
-
-  fill(255);
-  textSize(60);
-  text("Wave: " + wave, 150, 40);
-  text("Level: " + level, 600, 40);
-
   fill(0);
-  text("You died!", 600, 300);
+  textSize(100);
+  //temp
+  text("You're DEAD.", 600, 110);
+  textSize(30);
+  text("The world mourns a great hero...", 600, 200);
+
+  //rendering buttons
+  btnRestart.display();
+  btnMenu.display();
 }
 
 void win() {
+}
+
+void mousePressed() {
+  switch (screen) {
+    case "title":
+      if(btnStart.clicked()) {
+        screen = "game";
+        break;
+      } else if (btnSettings.clicked()) {
+        screen = "settings";
+        break;
+      } else if (btnQuit.clicked()) {
+        exit();
+      }
+    case "settings":
+      if(btnBack.clicked()) {
+        screen = "title";
+        break;
+      }
+    case "lose":
+      if(btnRestart.clicked()) {
+        screen = "game";
+        isGameOver = false;
+        player.health = 100;
+        player.exp = 0;
+        player.maxExp = 100;
+        level = 1;
+        wave = 1;
+        break;
+      } else if (btnMenu.clicked()) {
+        screen = "title";
+        isGameOver = false;
+        break;
+      }
+  }
 }
 
 void keyPressed() {
@@ -212,4 +291,3 @@ void keyReleased() {
     player.isMovingDown = false;
   }
 }
-
