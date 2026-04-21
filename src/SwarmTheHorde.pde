@@ -173,7 +173,7 @@ void gameScreen() {
         //player needs more exp to level up the higher their level is
         if (player.exp >= player.maxExp) {
           level += 1;
-          player.maxExp += 10;
+          player.maxExp += 20;
           player.exp = 0;
           println("Max Exp:" + player.maxExp);
         }
