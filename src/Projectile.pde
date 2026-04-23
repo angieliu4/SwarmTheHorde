@@ -34,6 +34,14 @@ class Projectile {
     x += vx;
     y += vy;
   }
+  
+  boolean offScreen() {
+    if (x < 0 || x > width || y < 0 || y > height) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   boolean intersect(Enemy e) {
     float d = dist(x, y, e.x, e.y);

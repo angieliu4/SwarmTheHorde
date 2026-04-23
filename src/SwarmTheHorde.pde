@@ -1,11 +1,11 @@
 //Main class
 
 //screens
-String screen = "title"; //title, game, settings, lose, win, pause
+String screen = "title"; //title, game, settings, lose, win, pause, level up, evolution
 
 //waves and player level
 int wave = 1;
-int level = 1;
+int level = 14;
 
 //game over switch and pause switch
 boolean isGameOver = false;
@@ -36,7 +36,7 @@ ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
 ArrayList<Exp> exps = new ArrayList<Exp>();
 
 //buttons
-Button btnStart, btnSettings, btnQuit, btnBack, btnMenu, btnRestart, btnDamageUpgrade, btnHealthUpgrade;
+Button btnStart, btnSettings, btnQuit, btnBack, btnMenu, btnRestart, btnDamageUpgrade, btnHealthUpgrade, btnYippee;
 
 void setup() {
   size(1200, 1000);
@@ -68,6 +68,7 @@ void setup() {
   btnMenu = new Button("Main Menu", 600, 625, 210, 50, #2f7542, #53b86e, 35);
   btnDamageUpgrade = new Button("Select", 755, 330, 100, 40, #2f7542, #53b86e, 25);
   btnHealthUpgrade = new Button("Select", 755, 430, 100, 40, #2f7542, #53b86e, 25);
+  btnYippee = new Button("Yippee!", 600, 760, 120, 50, #2f7542, #53b86e, 30);
 }
 
 void draw() {
@@ -90,6 +91,9 @@ void draw() {
     break;
   case "level up":
     levelUp();
+    break;
+  case "evolution":
+    evolution();
     break;
   }
 }
@@ -165,7 +169,9 @@ void gameScreen() {
     //checking for enemy/projectile collision, projectile rendering, exp spawning
     for (int i = 0; i < projectiles.size(); i++) {
       Projectile pjct = projectiles.get(i);
-
+      if (pjct.offScreen()) {
+        projectiles.remove(pjct);
+      }
       for (int j = 0; j < enemies.size(); j++) {
         //temp until better solution
         Enemy enemy = enemies.get(j);
@@ -192,8 +198,11 @@ void gameScreen() {
           level += 1;
           player.maxExp += 20;
           player.exp = 0;
-          screen = "level up";
-          isPaused = true;
+          if (level == 15) {
+            screen = "evolution";
+          } else {
+            screen = "level up";
+          }
           println("Max Exp:" + player.maxExp);
         }
       }
@@ -208,6 +217,7 @@ void gameScreen() {
 }
 
 void levelUp() {
+  isPaused = true;
   fill(255);
   rect(600, 500, 450, 600, 20);
   fill(0);
@@ -221,6 +231,29 @@ void levelUp() {
   //rendering buttons
   btnDamageUpgrade.display();
   btnHealthUpgrade.display();
+}
+
+void evolution() {
+  if (level == 15) {
+    isPaused = true;
+    fill(255);
+    rect(600, 500, 450, 600, 20);
+    fill(0);
+    textSize(50);
+    text("New Evolution!", 600, 235);
+    line(375, 275, 825, 275);
+    textSize(40);
+    text("Demon Rat", 600, 350);
+    textSize(30);
+    text("+15 Damage", 600, 625);
+    text("-0.25 Fire Rate", 600, 665);
+    text("+20 Health", 600, 700);
+
+
+
+    //rendering buttons
+    btnYippee.display();
+  }
 }
 
 void settingsScreen() {
@@ -298,7 +331,27 @@ void mousePressed() {
         playerDamage += 2;
         break;
       }
-    } 
+    } else if (btnHealthUpgrade.clicked()) {
+      screen = "game";
+      isPaused = false;
+      player.maxHealth += 5;
+      health += 5;
+      break;
+    }
+  case "evolution":
+    if (btnYippee.clicked()) {
+      screen = "game";
+      isPaused = false;
+      if (level == 15) {
+        for (int i = 0; i < projectiles.size(); i++) {
+          Projectile pjct = projectiles.get(i);
+          pjct.damage += 15;
+        }
+        player.maxHealth += 20;
+        pTime.totalTime -= 250;
+      }
+      break;
+    }
   }
 }
 
