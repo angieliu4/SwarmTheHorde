@@ -20,6 +20,12 @@ Timer pTime, enemyTime, waveTime;
 //player
 Player player;
 
+//stat trackers
+float playerDamage = 15;
+float health = 120;
+float totalDamage = 0;
+float totalKills = 0;
+
 //enemies
 ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 
@@ -30,7 +36,7 @@ ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
 ArrayList<Exp> exps = new ArrayList<Exp>();
 
 //buttons
-Button btnStart, btnSettings, btnQuit, btnBack, btnMenu, btnRestart;
+Button btnStart, btnSettings, btnQuit, btnBack, btnMenu, btnRestart, btnDamageUpgrade, btnHealthUpgrade;
 
 void setup() {
   size(1200, 1000);
@@ -41,13 +47,13 @@ void setup() {
   rectMode(CENTER);
 
   //set up player
-  player = new Player(600, 500, 100, 100);
+  player = new Player(600, 500);
 
   //setup timers
-  pTime = new Timer(500);
+  pTime = new Timer(850);
   pTime.start();
 
-  enemyTime = new Timer(2000);
+  enemyTime = new Timer(3000);
   enemyTime.start();
 
   waveTime = new Timer(60000);
@@ -60,6 +66,8 @@ void setup() {
   btnBack = new Button("Back", 100, 50, 150, 50, #2f7542, #53b86e, 35);
   btnRestart = new Button("Restart", 600, 500, 400, 100, #2f7542, #53b86e, 75);
   btnMenu = new Button("Main Menu", 600, 625, 210, 50, #2f7542, #53b86e, 35);
+  btnDamageUpgrade = new Button("Select", 755, 330, 100, 40, #2f7542, #53b86e, 25);
+  btnHealthUpgrade = new Button("Select", 755, 430, 100, 40, #2f7542, #53b86e, 25);
 }
 
 void draw() {
@@ -79,6 +87,9 @@ void draw() {
     break;
   case "lose":
     gameOver();
+    break;
+  case "level up":
+    levelUp();
     break;
   }
 }
@@ -104,16 +115,21 @@ void gameScreen() {
   //only runs if the game isn't over or paused
   if (isGameOver == false && isPaused == false) {
     background(255);
+    strokeWeight(1);
+    stroke(0);
 
     //gamebar
-    noStroke();
     fill(#fccce9);
+    rectMode(CENTER);
     rect(600, 50, 1200, 100);
 
     fill(255);
     textSize(60);
     text("Wave: " + wave, 150, 40);
     text("Level: " + level, 600, 40);
+
+    //rendering player
+    player.display();
 
     if (player.health <= 0) {
       isGameOver = true;
@@ -167,6 +183,7 @@ void gameScreen() {
     //rendering exp, player level up
     for (int k = 0; k < exps.size(); k++) {
       Exp exp = exps.get(k);
+      exp.display();
       if (exp.intersect(player)) {
         exps.remove(exp);
         println("Exp:" + player.exp);
@@ -175,10 +192,11 @@ void gameScreen() {
           level += 1;
           player.maxExp += 20;
           player.exp = 0;
+          screen = "level up";
+          isPaused = true;
           println("Max Exp:" + player.maxExp);
         }
       }
-      exp.display();
     }
 
     //wave timer
@@ -186,10 +204,23 @@ void gameScreen() {
       wave += 1;
       waveTime.start();
     }
-
-    //rendering player
-    player.display();
   }
+}
+
+void levelUp() {
+  fill(255);
+  rect(600, 500, 450, 600, 20);
+  fill(0);
+  textSize(50);
+  text("Level Up!", 600, 230);
+  line(375, 275, 825, 275);
+  textSize(30);
+  text("+2 Damage" + " " + "(" + playerDamage + "→" + (playerDamage + 2) + ")", 535, 325);
+  text("+5 Health" + " " + "(" + health + "→" + (health + 5) + ")", 540, 425);
+
+  //rendering buttons
+  btnDamageUpgrade.display();
+  btnHealthUpgrade.display();
 }
 
 void settingsScreen() {
@@ -227,36 +258,47 @@ void win() {
 
 void mousePressed() {
   switch (screen) {
-    case "title":
-      if(btnStart.clicked()) {
+  case "title":
+    if (btnStart.clicked()) {
+      screen = "game";
+      break;
+    } else if (btnSettings.clicked()) {
+      screen = "settings";
+      break;
+    } else if (btnQuit.clicked()) {
+      exit();
+    }
+  case "settings":
+    if (btnBack.clicked()) {
+      screen = "title";
+      break;
+    }
+  case "lose":
+    if (btnRestart.clicked()) {
+      screen = "game";
+      isGameOver = false;
+      player.health = 100;
+      player.exp = 0;
+      player.maxExp = 100;
+      level = 1;
+      wave = 1;
+      break;
+    } else if (btnMenu.clicked()) {
+      screen = "title";
+      isGameOver = false;
+      break;
+    }
+  case "level up":
+    if (btnDamageUpgrade.clicked()) {
+      for (int i = 0; i < projectiles.size(); i++) {
+        Projectile pjct = projectiles.get(i);
         screen = "game";
-        break;
-      } else if (btnSettings.clicked()) {
-        screen = "settings";
-        break;
-      } else if (btnQuit.clicked()) {
-        exit();
-      }
-    case "settings":
-      if(btnBack.clicked()) {
-        screen = "title";
+        isPaused = false;
+        pjct.damage += 2;
+        playerDamage += 2;
         break;
       }
-    case "lose":
-      if(btnRestart.clicked()) {
-        screen = "game";
-        isGameOver = false;
-        player.health = 100;
-        player.exp = 0;
-        player.maxExp = 100;
-        level = 1;
-        wave = 1;
-        break;
-      } else if (btnMenu.clicked()) {
-        screen = "title";
-        isGameOver = false;
-        break;
-      }
+    } 
   }
 }
 

@@ -2,19 +2,19 @@
 
 class Player {
   float x, y, w, h, speed;
-  float health = 100;
+  float health = 120;
   float exp = 0;
   float maxExp = 100;
-  int maxHealth = 100;
+  int maxHealth = 120;
 
   boolean isMovingLeft, isMovingRight, isMovingUp, isMovingDown;
 
-  Player(float x, float y, float w, float h) {
+  Player(float x, float y) {
     this.x = x;
     this.y = y;
-    this.w = w;
-    this.h = h;
-    speed = 10;
+    w = 50;
+    h = 50;
+    speed = 5.5;
 
     isMovingLeft = false;
     isMovingRight = false;
@@ -26,8 +26,11 @@ class Player {
     //placeholder
     fill(255, 0, 0);
     ellipse(x, y, w, h);
-
-    drawHealthBar();
+    
+    //only shows if player loses health
+    if (health < 120) {
+      drawHealthBar();
+    }
     move();
   }
 
@@ -55,9 +58,9 @@ class Player {
   //health bar
   void drawHealthBar() {
     fill(50);
-    rect(x, y + 65, maxHealth, 10);
+    rect(x, y + 40, maxHealth/2, 7);
     fill(0, 255, 0);
-    rect(x, y + 65, health, 10);
+    rect(x, y + 40, health/2, 7);
   }
   
   //boolean fire() {

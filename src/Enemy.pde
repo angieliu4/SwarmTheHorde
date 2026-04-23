@@ -10,18 +10,18 @@ class Enemy {
     //speed is set in the intersect method down below
 
     if (type == "red") {
-      w = 60;
-      h = 60;
+      w = 30;
+      h = 30;
       damage = 1;
       health = 100;
     } else if (type == "blue") {
-      w = 45;
-      h = 45;
+      w = 25;
+      h = 25;
       damage = 0.5;
       health = 75;
     } else if (type == "green") {
-      w = 75;
-      h = 75;
+      w = 40;
+      h = 40;
       damage = 2;
       health = 150;
     }
@@ -64,11 +64,11 @@ class Enemy {
       return true;
     } else {
       if (type == "red") {
-        speed = 5;
+        speed = 2;
       } else if (type == "green") {
-        speed = 3;
+        speed = 0.5;
       } else if (type == "blue") {
-        speed = 7;
+        speed = 3;
       }
       return false;
     }

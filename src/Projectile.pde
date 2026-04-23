@@ -10,10 +10,10 @@ class Projectile {
     this.y = y;
     this.tx = tx;
     this.ty = ty;
-    w = 30;
-    h = 30;
-    speed = 10;
-    damage = 20;
+    w = 15;
+    h = 15;
+    speed = 6;
+    damage = 15;
 
     float dx = tx - x;
     float dy = ty - y;
