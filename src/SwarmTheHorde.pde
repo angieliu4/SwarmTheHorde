@@ -21,8 +21,7 @@ Timer pTime, enemyTime, waveTime;
 Player player;
 
 //stat trackers
-float playerDamage = 15;
-float health = 120;
+float playerDamage = 15; //seperate tracker for projectile damage
 float totalDamage = 0;
 float totalKills = 0;
 
@@ -36,7 +35,7 @@ ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
 ArrayList<Exp> exps = new ArrayList<Exp>();
 
 //buttons
-Button btnStart, btnSettings, btnQuit, btnBack, btnMenu, btnRestart, btnDamageUpgrade, btnHealthUpgrade, btnYippee;
+Button btnStart, btnSettings, btnQuit, btnBack, btnMenu, btnRestart, btnDamageUpgrade, btnHealthUpgrade, btnFRUpgrade, btnSpeedUpgrade, btnYippee, btnSkip;
 
 void setup() {
   size(1200, 1000);
@@ -50,7 +49,7 @@ void setup() {
   player = new Player(600, 500);
 
   //setup timers
-  pTime = new Timer(850);
+  pTime = new Timer(1200);
   pTime.start();
 
   enemyTime = new Timer(3000);
@@ -68,7 +67,10 @@ void setup() {
   btnMenu = new Button("Main Menu", 600, 625, 210, 50, #2f7542, #53b86e, 35);
   btnDamageUpgrade = new Button("Select", 755, 330, 100, 40, #2f7542, #53b86e, 25);
   btnHealthUpgrade = new Button("Select", 755, 430, 100, 40, #2f7542, #53b86e, 25);
+  btnFRUpgrade = new Button("Select", 760, 530, 100, 40, #2f7542, #53b86e, 25);
+  btnSpeedUpgrade = new Button("Select", 730, 630, 100, 40, #2f7542, #53b86e, 25);
   btnYippee = new Button("Yippee!", 600, 760, 120, 50, #2f7542, #53b86e, 30);
+  btnSkip = new Button("Skip", 600, 750, 120, 50, #2f7542, #53b86e, 30);
 }
 
 void draw() {
@@ -122,15 +124,7 @@ void gameScreen() {
     strokeWeight(1);
     stroke(0);
 
-    //gamebar
-    fill(#fccce9);
-    rectMode(CENTER);
-    rect(600, 50, 1200, 100);
-
-    fill(255);
-    textSize(60);
-    text("Wave: " + wave, 150, 40);
-    text("Level: " + level, 600, 40);
+    player.character = "apricot";
 
     //rendering player
     player.display();
@@ -144,11 +138,11 @@ void gameScreen() {
     if (enemyTime.isFinished()) {
       randEnemy = (int)random(0, 10);
       if (randEnemy == 1 || randEnemy == 2 || randEnemy == 3 || randEnemy == 4) {
-        enemies.add(new Enemy(1300, 200, "red"));
+        enemies.add(new Enemy(random(0, 1300), 0, "red"));
       } else if (randEnemy == 5 || randEnemy == 6 || randEnemy == 7) {
-        enemies.add(new Enemy(1300, 200, "blue"));
+        enemies.add(new Enemy(random(0, 1300), 0, "blue"));
       } else if (randEnemy == 8 || randEnemy == 9) {
-        enemies.add(new Enemy(1300, 200, "green"));
+        enemies.add(new Enemy(random(0, 1300), 0, "green"));
       } else {
       }
       enemyTime.start();
@@ -213,6 +207,18 @@ void gameScreen() {
       wave += 1;
       waveTime.start();
     }
+    
+    //gamebar
+    fill(#fccce9);
+    rectMode(CENTER);
+    rect(600, 50, 1200, 100);
+
+    fill(255);
+    textSize(60);
+    text("Wave: " + wave, 150, 40);
+    text("Level: " + level, 600, 40);
+    
+    
   }
 }
 
@@ -226,11 +232,16 @@ void levelUp() {
   line(375, 275, 825, 275);
   textSize(30);
   text("+2 Damage" + " " + "(" + playerDamage + "→" + (playerDamage + 2) + ")", 535, 325);
-  text("+5 Health" + " " + "(" + health + "→" + (health + 5) + ")", 540, 425);
+  text("+5 Health" + " " + "(" + player.maxHealth + "→" + (player.maxHealth + 5) + ")", 540, 425);
+  text("-0.05 Fire Rate" + " " + "(" + (pTime.totalTime/1000) + "→" + ((pTime.totalTime - 50)/1000) + ")", 548, 525);
+  text("+0.3 Speed" + " " + "(" + player.speed + "→" + (player.speed + 0.3) + ")", 530, 625);
 
   //rendering buttons
   btnDamageUpgrade.display();
   btnHealthUpgrade.display();
+  btnFRUpgrade.display();
+  btnSpeedUpgrade.display();
+  btnSkip.display();
 }
 
 void evolution() {
@@ -325,17 +336,30 @@ void mousePressed() {
     if (btnDamageUpgrade.clicked()) {
       for (int i = 0; i < projectiles.size(); i++) {
         Projectile pjct = projectiles.get(i);
-        screen = "game";
-        isPaused = false;
         pjct.damage += 2;
-        playerDamage += 2;
-        break;
       }
+      screen = "game";
+      isPaused = false;
+      playerDamage += 2;
+      break;
     } else if (btnHealthUpgrade.clicked()) {
       screen = "game";
       isPaused = false;
       player.maxHealth += 5;
-      health += 5;
+      break;
+    } else if (btnFRUpgrade.clicked()) {
+      screen = "game";
+      isPaused = false;
+      pTime.totalTime -= 100;
+      break;
+    } else if (btnSpeedUpgrade.clicked()) {
+      screen = "game";
+      isPaused = false;
+      player.speed += 0.3;
+      break;
+    } else if (btnSkip.clicked()) {
+      screen = "game";
+      isPaused = false;
       break;
     }
   case "evolution":
@@ -349,6 +373,7 @@ void mousePressed() {
         }
         player.maxHealth += 20;
         pTime.totalTime -= 250;
+        playerDamage += 15;
       }
       break;
     }

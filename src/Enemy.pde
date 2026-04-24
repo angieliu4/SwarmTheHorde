@@ -64,11 +64,11 @@ class Enemy {
       return true;
     } else {
       if (type == "red") {
-        speed = 2;
+        speed = 1;
       } else if (type == "green") {
         speed = 0.5;
       } else if (type == "blue") {
-        speed = 3;
+        speed = 2;
       }
       return false;
     }

@@ -5,7 +5,9 @@ class Player {
   float health = 120;
   float exp = 0;
   float maxExp = 100;
-  int maxHealth = 120;
+  float maxHealth = 120;
+  
+  String character;
 
   boolean isMovingLeft, isMovingRight, isMovingUp, isMovingDown;
 
@@ -14,8 +16,6 @@ class Player {
     this.y = y;
     w = 50;
     h = 50;
-    speed = 5.5;
-
     isMovingLeft = false;
     isMovingRight = false;
     isMovingUp = false;
@@ -24,7 +24,11 @@ class Player {
 
   void display() {
     //placeholder
-    fill(255, 0, 0);
+    if (character == "hank") {
+      fill(0, 0, 0);
+    } else if (character == "apricot") {
+      fill(#bf8d62);
+    }
     ellipse(x, y, w, h);
     
     //only shows if player loses health
@@ -36,6 +40,12 @@ class Player {
 
 
   void move() {
+    if (character == "hank") {
+      speed = 4;
+    } else if (character == "apricot") {
+      speed = 5.5;
+    }
+    
     if (isMovingLeft) x -= speed;
     if (isMovingRight) x += speed;
     if (isMovingUp) y -= speed;
@@ -58,9 +68,9 @@ class Player {
   //health bar
   void drawHealthBar() {
     fill(50);
-    rect(x, y + 40, maxHealth/2, 7);
+    rect(x, y + 40, maxHealth/3, 7);
     fill(0, 255, 0);
-    rect(x, y + 40, health/2, 7);
+    rect(x, y + 40, health/3, 7);
   }
   
   //boolean fire() {

@@ -1,7 +1,7 @@
 class Timer {
 
-  int savedTime;
-  int totalTime;
+  float savedTime;
+  float totalTime;
 
   Timer(int tempTotalTime) {
     totalTime = tempTotalTime;
@@ -15,7 +15,7 @@ class Timer {
 
 
   boolean isFinished() {
-    int passedTime = millis()- savedTime;
+    float passedTime = millis()- savedTime;
     if (passedTime > totalTime) {
       return true;
     } else {
