@@ -5,7 +5,7 @@ String screen = "title"; //title, game, settings, lose, win, pause, level up, ev
 
 //waves and player level
 int wave = 1;
-int level = 14;
+int level = 1;
 
 //game over switch and pause switch
 boolean isGameOver = false;
