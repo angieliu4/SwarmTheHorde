@@ -5,6 +5,7 @@ Swarm the Horde is a bullet heaven, rouge-like game. Players will kill spawning 
 
 ##### *Dependencies:*
 Need to install Processing! [Processing Page](https://processing.org/)
+Once installed, download entire respository. Go to the "src" folder, click on any file ending in .pde. If it says "move file or keep in folder?" click "keep". Once the files are open, click the run button in the upper left hand corner.
 
 ##### *Phase Three Progress:*
 Added functioning UI, restart function (still a little buggy), ability to quit game
