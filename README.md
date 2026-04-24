@@ -3,6 +3,9 @@
 
 Swarm the Horde is a bullet heaven, rouge-like game. Players will kill spawning enemies, level up, and evolve their character. Players must survive for at least 15 minutes to win. If they lose too much health, they die and have to start over. There will be two characters to choose from.
 
+##### *Dependencies:*
+Need to install Processing! [Processing Page](https://processing.org/)
+
 ##### *Phase Three Progress:*
 Added functioning UI, restart function (still a little buggy), ability to quit game
 
