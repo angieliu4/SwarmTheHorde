@@ -1,7 +1,7 @@
 //Projectiles
 
 class Projectile {
-  float x, y, w, h, tx, ty, speed, damage;
+  float x, y, w, h, tx, ty, speed;
   float vx, vy;
 
 
@@ -13,7 +13,6 @@ class Projectile {
     w = 15;
     h = 15;
     speed = 6;
-    damage = 15;
 
     float dx = tx - x;
     float dy = ty - y;
@@ -27,6 +26,7 @@ class Projectile {
   void display() {
     fill(#7242f5);
     ellipse(x, y, w, h);
+    
     move();
   }
   
@@ -48,7 +48,6 @@ class Projectile {
     //checks if the edges of the hitboxes for projectile and enemy are colliding
     //w and h are the hitbox for the projectile, e.w and e.h are the hitbox for the enemy
     if (d < (w/2 + e.w/2) && d < (h/2 + e.h/2)) {
-      e.health -= damage;
       return true;
     } else {
       return false;

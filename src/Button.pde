@@ -27,12 +27,12 @@ class Button {
     }
     stroke(#154f25);
     strokeWeight(5);
-    rect(x, y, w, h, 20);
+    rect(x, y, w, h, 25);
     fill(255);
     textSize(textsize);
     textAlign(CENTER, CENTER);
     textMode(CENTER);
-    text(label, x, y - 5);
+    text(label, x, y);
   }
 
   boolean clicked() {

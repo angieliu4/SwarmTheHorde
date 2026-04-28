@@ -13,17 +13,17 @@ class Enemy {
       w = 30;
       h = 30;
       damage = 1;
-      health = 100;
+      health = 50;
     } else if (type == "blue") {
       w = 25;
       h = 25;
       damage = 0.5;
-      health = 75;
+      health = 25;
     } else if (type == "green") {
       w = 40;
       h = 40;
       damage = 2;
-      health = 150;
+      health = 75;
     }
   }
 

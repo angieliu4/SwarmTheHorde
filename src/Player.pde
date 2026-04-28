@@ -2,10 +2,10 @@
 
 class Player {
   float x, y, w, h, speed;
-  float health = 120;
+  float health = 100; //will get changed when player chooses character (in mouse clicked)
   float exp = 0;
   float maxExp = 100;
-  float maxHealth = 120;
+  float maxHealth = 100; //will get changed when player chooses character (in mouse clicked)
   
   String character;
 
@@ -32,7 +32,7 @@ class Player {
     ellipse(x, y, w, h);
     
     //only shows if player loses health
-    if (health < 120) {
+    if (health < maxHealth) {
       drawHealthBar();
     }
     move();
