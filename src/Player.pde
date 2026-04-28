@@ -35,6 +35,10 @@ class Player {
     if (health < maxHealth) {
       drawHealthBar();
     }
+    
+    if (health >= maxHealth) {
+      health = maxHealth;
+    }
     move();
   }
 

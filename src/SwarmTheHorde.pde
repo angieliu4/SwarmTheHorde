@@ -18,6 +18,9 @@ boolean gameAlreadyPlayed = false;
 //random enemy generation
 int randEnemy;
 
+//random food drops
+int randFood;
+
 //timers
 Timer pTime, enemyTime, waveTime;
 
@@ -26,6 +29,7 @@ Player player;
 
 //stat trackers
 float playerDamage; //tracker for projectile damage
+float foodHeal = 50; //tracker for food heal amount
 float totalDamage = 0;
 float totalKills = 0;
 
@@ -37,6 +41,9 @@ ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
 
 //exp
 ArrayList<Exp> exps = new ArrayList<Exp>();
+
+//food
+ArrayList<Food> foods = new ArrayList<Food>();
 
 //buttons
 Button btnStart, btnSettings, btnQuit, btnBack, btnMenu, btnRestart, btnResume, btnDamageUpgrade, btnHealthUpgrade, btnFRUpgrade, btnSpeedUpgrade, btnYippee, btnSkip, btnSelectA, btnSelectH;
@@ -151,21 +158,44 @@ void gameScreen() {
     //rendering player
     player.display();
 
+    
+
     if (player.health <= 0) {
       isGameOver = true;
       screen = "lose";
     }
 
-    //random enemy spawning, each enemy is weighted different, sometimes doesn't spawn an enemy
+    //random enemy spawning, each enemy is weighted differently based on waves
     if (enemyTime.isFinished()) {
-      randEnemy = (int)random(0, 10);
-      if (randEnemy == 1 || randEnemy == 2 || randEnemy == 3 || randEnemy == 4) {
-        enemies.add(new Enemy(random(0, 1300), 0, "red"));
-      } else if (randEnemy == 5 || randEnemy == 6 || randEnemy == 7) {
+      randEnemy = (int)random(1, 11);
+      if (wave <= 3) {
         enemies.add(new Enemy(random(0, 1300), 0, "blue"));
-      } else if (randEnemy == 8 || randEnemy == 9) {
+      } else if (wave == 4) {
+        if (randEnemy <= 5) {
+          enemies.add(new Enemy(random(0, 1300), 0, "blue"));
+        } else {
+          enemies.add(new Enemy(random(0, 1300), 0, "red"));
+        }
+      } else if (wave > 5 && wave <= 7) {
+        enemies.add(new Enemy(random(0, 1300), 0, "red"));
+      } else if (wave > 7 && wave <= 9) {
+        if (randEnemy <= 2) {
+          enemies.add(new Enemy(random(0, 1300), 0, "green"));
+        } else {
+          enemies.add(new Enemy(random(0, 1300), 0, "red"));
+        }
+      } else if (wave == 10) {
         enemies.add(new Enemy(random(0, 1300), 0, "green"));
-      } else {
+      } else if (wave == 11) {
+        if (randEnemy <= 4) {
+          enemies.add(new Enemy(random(0, 1300), 0, "black"));
+        } else {
+          enemies.add(new Enemy(random(0, 1300), 0, "green"));
+        }
+      } else if (wave > 11 && wave <= 13) {
+        enemies.add(new Enemy(random(0, 1300), 0, "black"));
+      } else if (wave > 13 && wave <= 15) {
+        enemies.add(new Enemy(random(0, 1300), 0, "pink"));
       }
       enemyTime.start();
     }
@@ -196,11 +226,27 @@ void gameScreen() {
           if (enemy.health <= 0) {
             exps.add(new Exp(enemy.x, enemy.y, "tier1"));
             enemies.remove(enemy);
+
+            randFood = int(random(1, 51)); //has a 1/50 chance to spawn food when enemy dies
+            if (randFood > 1) {
+              foods.add(new Food(enemy.x + 20, enemy.y + 20));
+            }
           }
           projectiles.remove(pjct);
         }
       }
       pjct.display();
+    }
+
+    //rendering food and check for intersection
+    for (int f = 0; f < foods.size(); f++) {
+      Food food = foods.get(f);
+      food.display();
+      if (food.intersect(player)) {
+        foods.remove(food);
+        player.health += foodHeal;
+        println(player.health);
+      }
     }
 
     //rendering exp, player level up
@@ -213,7 +259,7 @@ void gameScreen() {
         //player needs more exp to level up the higher their level is
         if (player.exp >= player.maxExp) {
           level += 1;
-          player.maxExp += 200;
+          player.maxExp += 100;
           player.exp = 0;
           if (level == 15 || level == 25 || level == 35 || level == 45 || level == 55) {
             screen = "evolution";
@@ -231,6 +277,8 @@ void gameScreen() {
       enemyTime.totalTime -= 200;
       waveTime.start();
     }
+    
+    
 
     //gamebar
     fill(#fccce9);
@@ -255,7 +303,7 @@ void levelUp() {
   textSize(30);
   text("+2 Damage" + " " + "(" + playerDamage + " " + "-" + " " + (playerDamage + 2) + ")", 535, 330);
   text("+5 Health" + " " + "(" + player.maxHealth + " " + "-" + " " + (player.maxHealth + 5) + ")", 540, 430);
-  text("-0.05 Fire Rate" + " " + "(" + (pTime.totalTime/1000) + " " + "-" + " " + ((pTime.totalTime - 50)/1000) + ")", 548, 530);
+  text("-0.03 Fire Rate" + " " + "(" + (pTime.totalTime/1000) + " " + "-" + " " + ((pTime.totalTime - 30)/1000) + ")", 548, 530);
   text("+0.3 Speed" + " " + "(" + player.speed + " " + "-" + " " + (player.speed + 0.3) + ")", 530, 630);
 
   //rendering buttons
@@ -274,17 +322,65 @@ void evolution() {
   textSize(50);
   text("New Evolution!", 600, 235);
   line(375, 275, 825, 275);
-  if (level == 15) {
-    textSize(40);
-    text("Demon Rat", 600, 350);
-    textSize(30);
-    text("+15 Damage", 600, 625);
-    text("-0.25 Fire Rate", 600, 665);
-    text("+20 Health", 600, 700);
-
-    //rendering buttons
-    
+  textSize(40);
+  if (player.character == "hank") {
+    if (level == 15) {
+      text("Flabbergasted Rat", 600, 350);
+      textSize(30);
+      text("+15 Damage", 600, 625);
+      text("-0.25 Fire Rate", 600, 665);
+      text("+20 Health", 600, 700);
+    } else if (level == 25) {
+      text("Ball Rat", 600, 350);
+      text("+20 Damage", 600, 625);
+      text("-0.25 Fire Rate", 600, 665);
+      text("+20 Health", 600, 700);
+    } else if (level == 35) {
+      text("Chicken Rat", 600, 350);
+      text("+25 Damage", 600, 625);
+      text("-0.25 Fire Rate", 600, 665);
+      text("+20 Health", 600, 700);
+    } else if (level == 45) {
+      text("Logarithmic Rat", 600, 350);
+      text("+30 Damage", 600, 625);
+      text("-0.25 Fire Rate", 600, 665);
+      text("+25 Health", 600, 700);
+    } else if (level == 55) {
+      text("Demon Rat", 600, 350);
+      text("+40 Damage", 600, 625);
+      text("-0.25 Fire Rate", 600, 665);
+      text("+30 Health", 600, 700);
+    }
+  } else if (player.character == "apricot") {
+    if (level == 15) {
+      text("Seasoned Rat", 600, 350);
+      textSize(30);
+      text("+10 Damage", 600, 625);
+      text("-0.30 Fire Rate", 600, 665);
+      text("+15 Health", 600, 700);
+    } else if (level == 25) {
+      text("Sleepy Rat", 600, 350);
+      text("+10 Damage", 600, 625);
+      text("-0.35 Fire Rate", 600, 665);
+      text("+15 Health", 600, 700);
+    } else if (level == 35) {
+      text("Blurry Rat", 600, 350);
+      text("+10 Damage", 600, 625);
+      text("-0.35 Fire Rate", 600, 665);
+      text("+15 Health", 600, 700);
+    } else if (level == 45) {
+      text("Croissant Rat", 600, 350);
+      text("+10 Damage", 600, 625);
+      text("-0.35 Fire Rate", 600, 665);
+      text("+15 Health", 600, 700);
+    } else if (level == 55) {
+      text("Rotisserie Rat", 600, 350);
+      text("+20 Damage", 600, 625);
+      text("-0.45 Fire Rate", 600, 665);
+      text("+20 Health", 600, 700);
+    }
   }
+  //rendering buttons
   btnYippee.display();
 }
 
@@ -340,13 +436,13 @@ void reset () {
     player.maxHealth = 120;
     playerDamage = 20;
     player.speed = 4;
-    pTime.totalTime = 1200;
+    pTime.totalTime = 3200;
   } else if (player.character == "apricot") {
     player.health = 90;
     player.maxHealth = 90;
     playerDamage = 13;
     player.speed = 5.5;
-    pTime.totalTime = 900;
+    pTime.totalTime = 2700;
   }
   player.x = 600;
   player.y = 500;
@@ -438,7 +534,7 @@ void mousePressed() {
     } else if (btnFRUpgrade.clicked()) {
       screen = "game";
       isPaused = false;
-      pTime.totalTime -= 100;
+      pTime.totalTime -= 30;
       break;
     } else if (btnSpeedUpgrade.clicked()) {
       screen = "game";
@@ -454,17 +550,56 @@ void mousePressed() {
     if (btnYippee.clicked()) {
       screen = "game";
       isPaused = false;
-      if (level == 15) {
-        if (player.character == "hank") {
+
+      if (player.character == "hank") {
+        if (level == 15) {
           player.maxHealth += 20;
           pTime.totalTime -= 250;
           playerDamage += 15;
-        } else if (player.character == "apricot") {
-          player.maxHealth += 10;
+        } else if (level == 25) {
+          player.maxHealth += 20;
+          pTime.totalTime -= 250;
+          playerDamage += 20;
+        } else if (level == 35) {
+          player.maxHealth += 20;
+          pTime.totalTime -= 250;
+          playerDamage += 25;
+        } else if (level == 45) {
+          player.maxHealth += 25;
+          pTime.totalTime -= 250;
+          playerDamage += 30;
+        } else if (level == 55) {
+          player.maxHealth += 30;
+          pTime.totalTime -= 250;
+          playerDamage += 40;
+        }
+      } else if (player.character == "apricot") {
+        if (level == 15) {
+          player.maxHealth += 15;
+          pTime.totalTime -= 300;
+          playerDamage += 10;
+        } else if (level == 25) {
+          player.maxHealth += 15;
           pTime.totalTime -= 350;
-          playerDamage += 7;
+          playerDamage += 10;
+        } else if (level == 35) {
+          player.maxHealth += 15;
+          pTime.totalTime -= 350;
+          playerDamage += 10;
+        } else if (level == 45) {
+          player.maxHealth += 15;
+          pTime.totalTime -= 350;
+          playerDamage += 10;
+        } else if (level == 55) {
+          player.maxHealth += 20;
+          pTime.totalTime -= 450;
+          playerDamage += 20;
         }
       }
+      //testing
+      println(player.maxHealth);
+      println(pTime.totalTime);
+      println(playerDamage);
       break;
     }
   }

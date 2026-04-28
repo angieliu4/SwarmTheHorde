@@ -13,17 +13,27 @@ class Enemy {
       w = 30;
       h = 30;
       damage = 1;
-      health = 50;
+      health = 125;
     } else if (type == "blue") {
       w = 25;
       h = 25;
-      damage = 0.5;
+      damage = 0.3;
       health = 25;
     } else if (type == "green") {
       w = 40;
       h = 40;
       damage = 2;
-      health = 75;
+      health = 300;
+    } else if (type == "black") {
+      w = 30;
+      h = 30;
+      damage = 3;
+      health = 600;
+    } else if (type == "pink") {
+      w = 30;
+      h = 30;
+      damage = 4;
+      health = 1000;
     }
   }
 
@@ -35,6 +45,10 @@ class Enemy {
       fill(0, 0, 255);
     } else if (type == "green") {
       fill(0, 255, 0);
+    } else if (type == "black") {
+      fill(0);
+    } else if (type == "pink") {
+      fill(#ff6bd3);
     }
 
     ellipse(x, y, w, h);
@@ -64,11 +78,15 @@ class Enemy {
       return true;
     } else {
       if (type == "red") {
-        speed = 1;
+        speed = 1.5;
       } else if (type == "green") {
-        speed = 0.5;
+        speed = 2.5;
       } else if (type == "blue") {
-        speed = 2;
+        speed = 1;
+      } else if (type == "black") {
+        speed = 4;
+      } else if (type == "pink") {
+        speed = 6;
       }
       return false;
     }
