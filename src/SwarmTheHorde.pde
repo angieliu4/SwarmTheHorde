@@ -4,7 +4,7 @@
 PFont PixelFont;
 
 //screens
-String screen = "title"; //title, game, charselect, settings, lose, win, pause, level up, evolution
+String screen = "title"; //title, game, charselect, settings, lose, win, pause, level up, evolution, credits, tutorial
 
 //waves and player level
 int wave = 1;
@@ -46,7 +46,7 @@ ArrayList<Exp> exps = new ArrayList<Exp>();
 ArrayList<Food> foods = new ArrayList<Food>();
 
 //buttons
-Button btnStart, btnSettings, btnQuit, btnBack, btnMenu, btnRestart, btnResume, btnDamageUpgrade, btnHealthUpgrade, btnFRUpgrade, btnSpeedUpgrade, btnYippee, btnSkip, btnSelectA, btnSelectH;
+Button btnStart, btnSettings, btnQuit, btnBack, btnMenu, btnRestart, btnResume, btnDamageUpgrade, btnHealthUpgrade, btnFRUpgrade, btnSpeedUpgrade, btnYippee, btnSkip, btnSelectA, btnSelectH, btnTutorial, btnCredits;
 
 void setup() {
   size(1200, 1000);
@@ -84,6 +84,8 @@ void setup() {
   btnSkip = new Button("Skip", 600, 750, 120, 50, #2f7542, #53b86e, 40);
   btnSelectA = new Button("Select", 850, 700, 120, 50, #2f7542, #53b86e, 40);
   btnSelectH = new Button("Select", 350, 700, 120, 50, #2f7542, #53b86e, 40);
+  btnTutorial = new Button ("Tutorial", 600, 450, 400, 100, #2f7542, #53b86e, 95);
+  btnCredits = new Button ("Credits", 600, 650, 400, 100, #2f7542, #53b86e, 95);
 }
 
 void draw() {
@@ -107,11 +109,20 @@ void draw() {
   case "lose":
     gameOver();
     break;
+  case "win":
+    win();
+    break;
   case "level up":
     levelUp();
     break;
   case "evolution":
     evolution();
+    break;
+  case "tutorial":
+    tutorialScreen();
+    break;
+  case "credits":
+    creditsScreen();
     break;
   }
 }
@@ -141,8 +152,12 @@ void characterSelect() {
   textSize(60);
   text("Fat Rat", 350, 320);
   text("Moldy Rat", 850, 320);
+  textSize(40);
+  text("Damage, Health", 350, 775);
+  text("Fire Rate, Move Speed", 850, 775);
 
   //rendering buttons
+  btnBack.display();
   btnSelectA.display();
   btnSelectH.display();
 }
@@ -163,6 +178,11 @@ void gameScreen() {
     if (player.health <= 0) {
       isGameOver = true;
       screen = "lose";
+    }
+    
+    if (wave == 16) {
+      isPaused = true;
+      screen = "win";
     }
 
     //random enemy spawning, each enemy is weighted differently based on waves
@@ -227,8 +247,8 @@ void gameScreen() {
             exps.add(new Exp(enemy.x, enemy.y, "tier1"));
             enemies.remove(enemy);
 
-            randFood = int(random(1, 51)); //has a 1/50 chance to spawn food when enemy dies
-            if (randFood > 1) {
+            randFood = int(random(1, 61)); //has a 1/60 chance to spawn food when enemy dies
+            if (randFood == 1) {
               foods.add(new Food(enemy.x + 20, enemy.y + 20));
             }
           }
@@ -259,7 +279,7 @@ void gameScreen() {
         //player needs more exp to level up the higher their level is
         if (player.exp >= player.maxExp) {
           level += 1;
-          player.maxExp += 100;
+          player.maxExp += 150;
           player.exp = 0;
           if (level == 15 || level == 25 || level == 35 || level == 45 || level == 55) {
             screen = "evolution";
@@ -394,6 +414,40 @@ void settingsScreen() {
 
   //rendering buttons
   btnBack.display();
+  btnTutorial.display();
+  btnCredits.display();
+}
+
+void tutorialScreen() {
+  background(255);
+
+  fill(0);
+  textSize(130);
+  //temp
+  text("Tutorial", 600, 130);
+  textSize(40);
+  text("Defeat enemies and collect EXP drops! Use your mouse to aim.", 600, 300);
+  text("Once enough EXP is collected, you can upgrade one of your stats.", 600, 400);
+  text("There will be different evolutions that are unlocked once your level is high\nenough, each character has unique ones!", 600, 525);
+  text("Enemies will progressive get harder as the waves go\n on, allocate your stats wisely!", 600, 650);
+  text("You will achieve victory once you have survived\n 15 waves (about 15 minutes).", 600, 800);
+
+  //rendering buttons
+  btnBack.display();
+}
+
+void creditsScreen() {
+  background(255);
+
+  fill(0);
+  textSize(130);
+  //temp
+  text("Credits", 600, 130);
+  textSize(70);
+  text("Made by Angie Liu!", 600, 500);
+
+  //rendering buttons
+  btnBack.display();
 }
 
 void pauseScreen() {
@@ -425,6 +479,18 @@ void gameOver() {
 }
 
 void win() {
+  background(255);
+
+  fill(0);
+  textSize(100);
+  //temp
+  text("You have made history!", 600, 110);
+  textSize(30);
+  text("As the world's first guinea pig to stop the end of human exsistance, you will be honored, Hero!", 600, 200);
+
+  //rendering buttons
+  btnRestart.display();
+  btnMenu.display();
 }
 
 //used to reset the game
@@ -478,6 +544,22 @@ void mousePressed() {
     if (btnBack.clicked()) {
       screen = "title";
       break;
+    } else if (btnTutorial.clicked()) {
+      screen = "tutorial";
+      break;
+    } else if (btnCredits.clicked()) {
+      screen = "credits";
+      break;
+    }
+  case "tutorial":
+    if (btnBack.clicked()) {
+      screen = "settings";
+      break;
+    }
+  case "credits":
+    if (btnBack.clicked()) {
+      screen = "settings";
+      break;
     }
   case "charselect":
     if (btnSelectA.clicked()) {
@@ -492,6 +574,9 @@ void mousePressed() {
       reset();
       gameAlreadyPlayed = true;
       break;
+    } else if (btnBack.clicked()) {
+      screen = "title";
+      break;
     }
   case "lose":
     if (btnRestart.clicked()) {
@@ -501,6 +586,15 @@ void mousePressed() {
     } else if (btnMenu.clicked()) {
       screen = "title";
       isGameOver = false;
+      break;
+    }
+  case "win":
+    if (btnRestart.clicked()) {
+      screen = "game";
+      reset();
+      break;
+    } else if (btnMenu.clicked()) {
+      screen = "title";
       break;
     }
   case "pause":

@@ -3,6 +3,7 @@
 class Projectile {
   float x, y, w, h, tx, ty, speed;
   float vx, vy;
+  PImage image;
 
 
   Projectile(float x, float y, float tx, float ty) {
@@ -10,8 +11,9 @@ class Projectile {
     this.y = y;
     this.tx = tx;
     this.ty = ty;
-    w = 15;
-    h = 15;
+    image = loadImage("projectile.png");
+    w = 20;
+    h = 20;
     speed = 6;
 
     float dx = tx - x;
@@ -24,8 +26,7 @@ class Projectile {
   }
 
   void display() {
-    fill(#7242f5);
-    ellipse(x, y, w, h);
+    image(image, x, y);
     
     move();
   }

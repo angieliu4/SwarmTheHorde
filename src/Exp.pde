@@ -11,7 +11,7 @@ class Exp {
     w = 15;
     h = 15;
     if (type == "tier1") {
-      amount = 10000;
+      amount = 65;
     }
     
   }
