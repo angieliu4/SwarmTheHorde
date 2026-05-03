@@ -1,3 +1,4 @@
+
 //Main class
 
 //font
@@ -169,6 +170,7 @@ void gameScreen() {
     background(255);
     strokeWeight(1);
     stroke(0);
+    imageMode(CENTER);
 
     //rendering player
     player.display();
