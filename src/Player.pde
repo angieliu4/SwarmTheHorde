@@ -10,12 +10,14 @@ class Player {
   String character;
 
   boolean isMovingLeft, isMovingRight, isMovingUp, isMovingDown;
+  
+  PImage image;
 
   Player(float x, float y) {
     this.x = x;
     this.y = y;
-    w = 50;
-    h = 50;
+    w = 70;
+    h = 70;
     isMovingLeft = false;
     isMovingRight = false;
     isMovingUp = false;
@@ -25,11 +27,11 @@ class Player {
   void display() {
     //placeholder
     if (character == "hank") {
-      fill(0, 0, 0);
+      image = loadImage("flabbergastedrat.png");
     } else if (character == "apricot") {
       fill(#bf8d62);
     }
-    ellipse(x, y, w, h);
+    image(image, x, y);
     
     //only shows if player loses health
     if (health < maxHealth) {
@@ -72,9 +74,9 @@ class Player {
   //health bar
   void drawHealthBar() {
     fill(50);
-    rect(x, y + 40, maxHealth/3, 7);
+    rect(x, y + 50, maxHealth/3, 7);
     fill(0, 255, 0);
-    rect(x, y + 40, health/3, 7);
+    rect(x, y + 50, health/3, 7);
   }
   
   //boolean fire() {
