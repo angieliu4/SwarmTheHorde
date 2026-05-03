@@ -3,6 +3,7 @@
 class Exp {
   float x, y, w, h, amount;
   String type;
+  PImage image;
 
   Exp(float x, float y, String type) {
     this.x = x;
@@ -18,9 +19,10 @@ class Exp {
 
   void display() {
     if (type == "tier1") {
-      fill(#de83ad);
+      image = loadImage("exp.png");
     }
-    ellipse(x, y, w, h);
+    image.resize(15, 15);
+    image(image, x, y);
   }
  
 
