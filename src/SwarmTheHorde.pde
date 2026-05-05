@@ -4,6 +4,9 @@
 //font
 PFont PixelFont;
 
+//images
+PImage fat, moldy, demon, chicken, ball, flabbergasted, logarithmic, seasoned, rottisserie, blurry, croissant, sleepy;
+
 //screens
 String screen = "title"; //title, game, charselect, settings, lose, win, pause, level up, evolution, credits, tutorial
 
@@ -56,6 +59,7 @@ void setup() {
   textAlign(CENTER, CENTER);
   textMode(CENTER);
   rectMode(CENTER);
+  imageMode(CENTER);
 
   //set up font
   PixelFont = createFont("PixelFont.ttf", 32);
@@ -68,6 +72,10 @@ void setup() {
   pTime = new Timer(0); //will get set when player chooses character (in mouse clicked)
   enemyTime = new Timer(3000);
   waveTime = new Timer(60000);
+  
+  //image setup
+  fat = loadImage("fatrat.png");
+  moldy = loadImage("moldyrat.png");
 
   //button setup, parameters in order are text, x position, y position, width, height, normal color, hovering color, text size
   btnStart = new Button ("Start", 600, 500, 400, 100, #2f7542, #53b86e, 95);
@@ -156,6 +164,10 @@ void characterSelect() {
   textSize(40);
   text("Damage, Health", 350, 775);
   text("Fire Rate, Move Speed", 850, 775);
+  image(fat, 350, 500);
+  fat.resize(170, 170);
+  image(moldy, 850, 500);
+  moldy.resize(170, 170);
 
   //rendering buttons
   btnBack.display();
@@ -170,7 +182,6 @@ void gameScreen() {
     background(255);
     strokeWeight(1);
     stroke(0);
-    imageMode(CENTER);
 
     //rendering player
     player.display();
@@ -246,10 +257,14 @@ void gameScreen() {
         if (pjct.intersect(enemy)) {
           enemy.health -= playerDamage;
           if (enemy.health <= 0) {
-            exps.add(new Exp(enemy.x, enemy.y, "tier1"));
+            if(wave >= 6) {
+              exps.add(new Exp(enemy.x, enemy.y, "tier2"));
+            } else {
+              exps.add(new Exp(enemy.x, enemy.y, "tier1"));
+            }
             enemies.remove(enemy);
-
-            randFood = int(random(1, 61)); //has a 1/60 chance to spawn food when enemy dies
+            
+            randFood = int(random(1, 51)); //has a 1/50 chance to spawn food when enemy dies
             if (randFood == 1) {
               foods.add(new Food(enemy.x + 20, enemy.y + 20));
             }
@@ -516,7 +531,7 @@ void reset () {
   player.y = 500;
   player.exp = 0;
   player.maxExp = 100;
-  level = 1;
+  level = 14;
   wave = 1;
   projectiles.clear();
   enemies.clear();

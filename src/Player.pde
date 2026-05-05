@@ -6,11 +6,11 @@ class Player {
   float exp = 0;
   float maxExp = 100;
   float maxHealth = 100; //will get changed when player chooses character (in mouse clicked)
-  
+
   String character;
 
   boolean isMovingLeft, isMovingRight, isMovingUp, isMovingDown;
-  
+
   PImage image;
 
   Player(float x, float y) {
@@ -22,22 +22,47 @@ class Player {
     isMovingRight = false;
     isMovingUp = false;
     isMovingDown = false;
+
+    
   }
 
   void display() {
-    //placeholder
     if (character == "hank") {
-      image = loadImage("flabbergastedrat.png");
+      if (level < 15) {
+        image = loadImage("fatrat.png");
+      }
+      if (level == 15) {
+        image = loadImage("flabberghastedrat.png");
+      } else if (level == 25) {
+        image = loadImage("ballrat.png");
+      } else if (level == 35) {
+        image = loadImage("chickenrat.png");
+      } else if (level == 45) {
+        image = loadImage("logarithmicrat.png");
+      } else if (level == 55) {
+        image = loadImage("demonrat.png");
+      }
     } else if (character == "apricot") {
-      fill(#bf8d62);
+      if (level == 15) {
+        image = loadImage("moldyrat.png");
+      } else if (level == 25) {
+        image = loadImage("moldyrat.png");
+      } else if (level == 35) {
+        image = loadImage("moldyrat.png");
+      } else if (level == 45) {
+        image = loadImage("moldyrat.png");
+      } else if (level == 55) {
+        image = loadImage("moldyrat.png");
+      }
     }
     image(image, x, y);
-    
+
+
     //only shows if player loses health
     if (health < maxHealth) {
       drawHealthBar();
     }
-    
+
     if (health >= maxHealth) {
       health = maxHealth;
     }
@@ -51,7 +76,7 @@ class Player {
     } else if (character == "apricot") {
       speed = 5.5;
     }
-    
+
     if (isMovingLeft) x -= speed;
     if (isMovingRight) x += speed;
     if (isMovingUp) y -= speed;
@@ -78,8 +103,8 @@ class Player {
     fill(0, 255, 0);
     rect(x, y + 50, health/3, 7);
   }
-  
+
   //boolean fire() {
-    
+
   //}
 }

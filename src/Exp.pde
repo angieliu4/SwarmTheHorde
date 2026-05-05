@@ -12,7 +12,9 @@ class Exp {
     w = 15;
     h = 15;
     if (type == "tier1") {
-      amount = 65;
+      amount = 75;
+    } else if (type == "tier2") {
+      amount = 200;
     }
     
   }
@@ -20,6 +22,8 @@ class Exp {
   void display() {
     if (type == "tier1") {
       image = loadImage("exp.png");
+    } else if (type == "tier2") {
+      image = loadImage("exp2.png");
     }
     image.resize(15, 15);
     image(image, x, y);
