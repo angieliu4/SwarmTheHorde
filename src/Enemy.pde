@@ -41,15 +41,15 @@ class Enemy {
   void display() {
     //placeholder
     if (type == "red") {
-      
+      image = loadImage("plate.png");
     } else if (type == "blue") {
       image = loadImage("plate.png");
     } else if (type == "green") {
-      fill(0, 255, 0);
+      image = loadImage("plate.png");
     } else if (type == "black") {
-      fill(0);
+      image = loadImage("plate.png");
     } else if (type == "pink") {
-      fill(#ff6bd3);
+      image = loadImage("plate.png");
     }
 
     image(image, x, y);
