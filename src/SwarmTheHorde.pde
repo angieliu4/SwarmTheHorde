@@ -5,7 +5,7 @@
 PFont PixelFont;
 
 //images
-PImage fat, moldy, demon, chicken, ball, flabbergasted, logarithmic, seasoned, rottisserie, blurry, croissant, sleepy;
+PImage fat, moldy, demon, chicken, ball, flabbergasted, logarithmic, seasoned, rotisserie, blurry, croissant, sleepy;
 
 //screens
 String screen = "title"; //title, game, charselect, settings, lose, win, pause, level up, evolution, credits, tutorial
@@ -75,7 +75,17 @@ void setup() {
   
   //image setup
   fat = loadImage("fatrat.png");
+  demon = loadImage("demonrat.png");
+  chicken = loadImage("chickenrat.png");
+  ball = loadImage("ballrat.png");
+  flabbergasted = loadImage("flabberghastedrat.png");
+  logarithmic = loadImage("logarithmicrat.png");
   moldy = loadImage("moldyrat.png");
+  seasoned = loadImage("seasonedrat.png");
+  blurry = loadImage("blurryrat.png");
+  croissant = loadImage("croissantrat.png");
+  rotisserie = loadImage("rotisserierat.png");
+  sleepy = loadImage("sleepyrat.png");
 
   //button setup, parameters in order are text, x position, y position, width, height, normal color, hovering color, text size
   btnStart = new Button ("Start", 600, 500, 400, 100, #2f7542, #53b86e, 95);
@@ -363,27 +373,37 @@ void evolution() {
   if (player.character == "hank") {
     if (level == 15) {
       text("Flabbergasted Rat", 600, 350);
+      image(flabbergasted, 600, 490);
+      flabbergasted.resize(140, 140);
       textSize(30);
       text("+15 Damage", 600, 625);
       text("-0.25 Fire Rate", 600, 665);
       text("+20 Health", 600, 700);
     } else if (level == 25) {
       text("Ball Rat", 600, 350);
+      image(ball, 600, 490);
+      ball.resize(140, 140);
       text("+20 Damage", 600, 625);
       text("-0.25 Fire Rate", 600, 665);
       text("+20 Health", 600, 700);
     } else if (level == 35) {
       text("Chicken Rat", 600, 350);
+      image(chicken, 600, 490);
+      chicken.resize(140, 140);
       text("+25 Damage", 600, 625);
       text("-0.25 Fire Rate", 600, 665);
       text("+20 Health", 600, 700);
     } else if (level == 45) {
       text("Logarithmic Rat", 600, 350);
+      image(logarithmic, 600, 490);
+      logarithmic.resize(140, 140);
       text("+30 Damage", 600, 625);
       text("-0.25 Fire Rate", 600, 665);
       text("+25 Health", 600, 700);
     } else if (level == 55) {
       text("Demon Rat", 600, 350);
+      image(demon, 600, 490);
+      demon.resize(140, 140);
       text("+40 Damage", 600, 625);
       text("-0.25 Fire Rate", 600, 665);
       text("+30 Health", 600, 700);
@@ -391,27 +411,37 @@ void evolution() {
   } else if (player.character == "apricot") {
     if (level == 15) {
       text("Seasoned Rat", 600, 350);
+      image(seasoned, 600, 490);
+      seasoned.resize(140, 140);
       textSize(30);
       text("+10 Damage", 600, 625);
       text("-0.30 Fire Rate", 600, 665);
       text("+15 Health", 600, 700);
     } else if (level == 25) {
       text("Sleepy Rat", 600, 350);
+      image(sleepy, 600, 490);
+      sleepy.resize(140, 140);
       text("+10 Damage", 600, 625);
       text("-0.35 Fire Rate", 600, 665);
       text("+15 Health", 600, 700);
     } else if (level == 35) {
       text("Blurry Rat", 600, 350);
+      image(blurry, 600, 490);
+      blurry.resize(140, 140);
       text("+10 Damage", 600, 625);
       text("-0.35 Fire Rate", 600, 665);
       text("+15 Health", 600, 700);
     } else if (level == 45) {
       text("Croissant Rat", 600, 350);
+      image(croissant, 600, 490);
+      croissant.resize(140, 140);
       text("+10 Damage", 600, 625);
       text("-0.35 Fire Rate", 600, 665);
       text("+15 Health", 600, 700);
     } else if (level == 55) {
       text("Rotisserie Rat", 600, 350);
+      image(rotisserie, 600, 490);
+      rotisserie.resize(140, 140);
       text("+20 Damage", 600, 625);
       text("-0.45 Fire Rate", 600, 665);
       text("+20 Health", 600, 700);
@@ -531,7 +561,7 @@ void reset () {
   player.y = 500;
   player.exp = 0;
   player.maxExp = 100;
-  level = 14;
+  level = 1;
   wave = 1;
   projectiles.clear();
   enemies.clear();

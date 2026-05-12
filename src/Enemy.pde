@@ -2,6 +2,7 @@ class Enemy {
   float x, y, w, h, speed, damage;
   String type;
   int health;
+  PImage image;
 
   Enemy(float x, float y, String type) {
     this.x = x;
@@ -15,8 +16,8 @@ class Enemy {
       damage = 1;
       health = 125;
     } else if (type == "blue") {
-      w = 25;
-      h = 25;
+      w = 35;
+      h = 35;
       damage = 0.3;
       health = 25;
     } else if (type == "green") {
@@ -40,9 +41,9 @@ class Enemy {
   void display() {
     //placeholder
     if (type == "red") {
-      fill(255, 0, 0);
+      
     } else if (type == "blue") {
-      fill(0, 0, 255);
+      image = loadImage("plate.png");
     } else if (type == "green") {
       fill(0, 255, 0);
     } else if (type == "black") {
@@ -51,7 +52,7 @@ class Enemy {
       fill(#ff6bd3);
     }
 
-    ellipse(x, y, w, h);
+    image(image, x, y);
     
     //calling the follow and intersect methods so we don't need to do it in the main class
     update();

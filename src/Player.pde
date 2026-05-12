@@ -22,13 +22,12 @@ class Player {
     isMovingRight = false;
     isMovingUp = false;
     isMovingDown = false;
-
     
   }
 
   void display() {
     if (character == "hank") {
-      if (level < 15) {
+      if (level == 1) {
         image = loadImage("fatrat.png");
       }
       if (level == 15) {
@@ -43,16 +42,18 @@ class Player {
         image = loadImage("demonrat.png");
       }
     } else if (character == "apricot") {
-      if (level == 15) {
+      if (level == 1) {
         image = loadImage("moldyrat.png");
+      } else if (level == 15) {
+        image = loadImage("seasonedrat.png");
       } else if (level == 25) {
-        image = loadImage("moldyrat.png");
+        image = loadImage("sleepyrat.png");
       } else if (level == 35) {
-        image = loadImage("moldyrat.png");
+        image = loadImage("blurryrat.png");
       } else if (level == 45) {
-        image = loadImage("moldyrat.png");
+        image = loadImage("croissantrat.png");
       } else if (level == 55) {
-        image = loadImage("moldyrat.png");
+        image = loadImage("rotisserierat.png");
       }
     }
     image(image, x, y);
