@@ -303,17 +303,18 @@ void gameScreen() {
       if (exp.intersect(player)) {
         exps.remove(exp);
         println("Exp:" + player.exp);
+        println("Max Exp:" + player.maxExp);
         //player needs more exp to level up the higher their level is
         if (player.exp >= player.maxExp) {
+          player.exp -= player.maxExp;
           level += 1;
           player.maxExp += 150;
-          player.exp = 0;
           if (level == 15 || level == 25 || level == 35 || level == 45 || level == 55) {
             screen = "evolution";
           } else {
             screen = "level up";
           }
-          println("Max Exp:" + player.maxExp);
+          
         }
       }
     }

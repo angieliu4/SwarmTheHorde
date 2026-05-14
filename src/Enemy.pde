@@ -14,7 +14,7 @@ class Enemy {
       w = 30;
       h = 30;
       damage = 1;
-      health = 125;
+      health = 75;
     } else if (type == "blue") {
       w = 35;
       h = 35;

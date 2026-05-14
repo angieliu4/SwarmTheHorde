@@ -12,9 +12,9 @@ class Exp {
     w = 15;
     h = 15;
     if (type == "tier1") {
-      amount = 75;
-    } else if (type == "tier2") {
       amount = 200;
+    } else if (type == "tier2") {
+      amount = 400;
     }
     
   }
