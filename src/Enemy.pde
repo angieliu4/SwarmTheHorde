@@ -11,8 +11,8 @@ class Enemy {
     //speed is set in the intersect method down below
 
     if (type == "red") {
-      w = 30;
-      h = 30;
+      w = 50;
+      h = 40;
       damage = 1;
       health = 75;
     } else if (type == "blue") {
@@ -21,13 +21,13 @@ class Enemy {
       damage = 0.3;
       health = 25;
     } else if (type == "green") {
-      w = 40;
-      h = 40;
+      w = 25;
+      h = 65;
       damage = 2;
       health = 300;
     } else if (type == "black") {
-      w = 30;
-      h = 30;
+      w = 25;
+      h = 55;
       damage = 3;
       health = 600;
     } else if (type == "pink") {
@@ -41,11 +41,11 @@ class Enemy {
   void display() {
     //placeholder
     if (type == "red") {
-      image = loadImage("plate.png");
+      image = loadImage("tv.png");
     } else if (type == "blue") {
       image = loadImage("plate.png");
     } else if (type == "green") {
-      image = loadImage("plate.png");
+      image = loadImage("light.png");
     } else if (type == "black") {
       image = loadImage("plate.png");
     } else if (type == "pink") {

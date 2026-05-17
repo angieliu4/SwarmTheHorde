@@ -219,7 +219,7 @@ void gameScreen() {
         } else {
           enemies.add(new Enemy(random(0, 1300), 0, "red"));
         }
-      } else if (wave > 5 && wave <= 7) {
+      } else if (wave >= 5 && wave <= 7) {
         enemies.add(new Enemy(random(0, 1300), 0, "red"));
       } else if (wave > 7 && wave <= 9) {
         if (randEnemy <= 2) {
@@ -563,7 +563,7 @@ void reset () {
   player.exp = 0;
   player.maxExp = 100;
   level = 1;
-  wave = 1;
+  wave = 8;
   projectiles.clear();
   enemies.clear();
   exps.clear();
