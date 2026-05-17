@@ -27,12 +27,12 @@ class Enemy {
       health = 300;
     } else if (type == "black") {
       w = 25;
-      h = 55;
+      h = 45;
       damage = 3;
       health = 600;
     } else if (type == "pink") {
-      w = 30;
-      h = 30;
+      w = 25;
+      h = 35;
       damage = 4;
       health = 1000;
     }
@@ -47,9 +47,9 @@ class Enemy {
     } else if (type == "green") {
       image = loadImage("light.png");
     } else if (type == "black") {
-      image = loadImage("plate.png");
+      image = loadImage("soda.png");
     } else if (type == "pink") {
-      image = loadImage("plate.png");
+      image = loadImage("avocado.png");
     }
 
     image(image, x, y);
@@ -85,9 +85,9 @@ class Enemy {
       } else if (type == "blue") {
         speed = 1;
       } else if (type == "black") {
-        speed = 4;
+        speed = 3;
       } else if (type == "pink") {
-        speed = 6;
+        speed = 4;
       }
       return false;
     }

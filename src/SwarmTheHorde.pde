@@ -35,7 +35,8 @@ Player player;
 float playerDamage; //tracker for projectile damage
 float foodHeal = 50; //tracker for food heal amount
 float totalDamage = 0;
-float totalKills = 0;
+int totalKills = 0;
+String currentEvo;
 
 //enemies
 ArrayList<Enemy> enemies = new ArrayList<Enemy>();
@@ -267,6 +268,7 @@ void gameScreen() {
         if (pjct.intersect(enemy)) {
           enemy.health -= playerDamage;
           if (enemy.health <= 0) {
+            totalKills += 1;
             if(wave >= 6) {
               exps.add(new Exp(enemy.x, enemy.y, "tier2"));
             } else {
@@ -337,6 +339,9 @@ void gameScreen() {
     textSize(60);
     text("Wave: " + wave, 150, 40);
     text("Level: " + level, 600, 40);
+    text("Kills: " + totalKills, 1050, 40);
+    textSize(30);
+    text("Current Evolution: " + currentEvo, 600, 75);
   }
 }
 
@@ -380,6 +385,7 @@ void evolution() {
       text("+15 Damage", 600, 625);
       text("-0.25 Fire Rate", 600, 665);
       text("+20 Health", 600, 700);
+      currentEvo = "Flabbergasted Rat";
     } else if (level == 25) {
       text("Ball Rat", 600, 350);
       image(ball, 600, 490);
@@ -387,6 +393,7 @@ void evolution() {
       text("+20 Damage", 600, 625);
       text("-0.25 Fire Rate", 600, 665);
       text("+20 Health", 600, 700);
+      currentEvo = "Ball Rat";
     } else if (level == 35) {
       text("Chicken Rat", 600, 350);
       image(chicken, 600, 490);
@@ -394,6 +401,7 @@ void evolution() {
       text("+25 Damage", 600, 625);
       text("-0.25 Fire Rate", 600, 665);
       text("+20 Health", 600, 700);
+      currentEvo = "Chicken Rat";
     } else if (level == 45) {
       text("Logarithmic Rat", 600, 350);
       image(logarithmic, 600, 490);
@@ -401,6 +409,7 @@ void evolution() {
       text("+30 Damage", 600, 625);
       text("-0.25 Fire Rate", 600, 665);
       text("+25 Health", 600, 700);
+      currentEvo = "Logarithmic Rat";
     } else if (level == 55) {
       text("Demon Rat", 600, 350);
       image(demon, 600, 490);
@@ -408,6 +417,7 @@ void evolution() {
       text("+40 Damage", 600, 625);
       text("-0.25 Fire Rate", 600, 665);
       text("+30 Health", 600, 700);
+      currentEvo = "Demon Rat";
     }
   } else if (player.character == "apricot") {
     if (level == 15) {
@@ -418,6 +428,7 @@ void evolution() {
       text("+10 Damage", 600, 625);
       text("-0.30 Fire Rate", 600, 665);
       text("+15 Health", 600, 700);
+      currentEvo = "Seasoned Rat";
     } else if (level == 25) {
       text("Sleepy Rat", 600, 350);
       image(sleepy, 600, 490);
@@ -425,6 +436,7 @@ void evolution() {
       text("+10 Damage", 600, 625);
       text("-0.35 Fire Rate", 600, 665);
       text("+15 Health", 600, 700);
+      currentEvo = "Sleepy Rat";
     } else if (level == 35) {
       text("Blurry Rat", 600, 350);
       image(blurry, 600, 490);
@@ -432,6 +444,7 @@ void evolution() {
       text("+10 Damage", 600, 625);
       text("-0.35 Fire Rate", 600, 665);
       text("+15 Health", 600, 700);
+      currentEvo = "Blurry Rat";
     } else if (level == 45) {
       text("Croissant Rat", 600, 350);
       image(croissant, 600, 490);
@@ -439,6 +452,7 @@ void evolution() {
       text("+10 Damage", 600, 625);
       text("-0.35 Fire Rate", 600, 665);
       text("+15 Health", 600, 700);
+      currentEvo = "Croissant Rat";
     } else if (level == 55) {
       text("Rotisserie Rat", 600, 350);
       image(rotisserie, 600, 490);
@@ -446,6 +460,7 @@ void evolution() {
       text("+20 Damage", 600, 625);
       text("-0.45 Fire Rate", 600, 665);
       text("+20 Health", 600, 700);
+      currentEvo = "Rotisserie Rat";
     }
   }
   //rendering buttons
@@ -551,19 +566,23 @@ void reset () {
     playerDamage = 20;
     player.speed = 4;
     pTime.totalTime = 3200;
+    currentEvo = "Fat Rat";
   } else if (player.character == "apricot") {
     player.health = 90;
     player.maxHealth = 90;
     playerDamage = 13;
     player.speed = 5.5;
     pTime.totalTime = 2700;
+    currentEvo = "Moldy Rat";
   }
   player.x = 600;
   player.y = 500;
   player.exp = 0;
   player.maxExp = 100;
   level = 1;
-  wave = 8;
+  wave = 1;
+  totalKills = 0;
+  totalDamage = 0;
   projectiles.clear();
   enemies.clear();
   exps.clear();
