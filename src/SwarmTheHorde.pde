@@ -92,8 +92,8 @@ void setup() {
   gamebar = loadImage("gamebar.png");
 
   //button setup, parameters in order are text, x position, y position, width, height, normal color, hovering color, text size
-  btnStart = new Button ("Start", 600, 500, 400, 100, #2f7542, #53b86e, 95);
-  btnSettings = new Button("Settings", 600, 625, 200, 50, #2f7542, #53b86e, 45);
+  btnStart = new Button ("Start", 600, 500, 400, 100, #fa55a1, #f882b8, 95);
+  btnSettings = new Button("Settings", 600, 625, 200, 50, #48fbfc, #b4feff, 45);
   btnQuit = new Button("Quit", 600, 700, 150, 50, #2f7542, #53b86e, 45);
   btnBack = new Button("Back", 100, 50, 150, 50, #2f7542, #53b86e, 45);
   btnRestart = new Button("Restart", 600, 500, 400, 100, #2f7542, #53b86e, 85);
