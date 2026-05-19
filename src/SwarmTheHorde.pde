@@ -6,6 +6,7 @@ PFont PixelFont;
 
 //images
 PImage fat, moldy, demon, chicken, ball, flabbergasted, logarithmic, seasoned, rotisserie, blurry, croissant, sleepy;
+PImage gamebar;
 
 //screens
 String screen = "title"; //title, game, charselect, settings, lose, win, pause, level up, evolution, credits, tutorial
@@ -87,6 +88,8 @@ void setup() {
   croissant = loadImage("croissantrat.png");
   rotisserie = loadImage("rotisserierat.png");
   sleepy = loadImage("sleepyrat.png");
+  
+  gamebar = loadImage("gamebar.png");
 
   //button setup, parameters in order are text, x position, y position, width, height, normal color, hovering color, text size
   btnStart = new Button ("Start", 600, 500, 400, 100, #2f7542, #53b86e, 95);
@@ -333,15 +336,15 @@ void gameScreen() {
     //gamebar
     fill(#fccce9);
     rectMode(CENTER);
-    rect(600, 50, 1200, 100);
+    image(gamebar, 600, 62);
 
-    fill(255);
+    fill(0);
     textSize(60);
-    text("Wave: " + wave, 150, 40);
-    text("Level: " + level, 600, 40);
-    text("Kills: " + totalKills, 1050, 40);
+    text("Wave: " + wave, 150, 60);
+    text("Level: " + level, 600, 60);
+    text("Kills: " + totalKills, 1050, 60);
     textSize(30);
-    text("Current Evolution: " + currentEvo, 600, 75);
+    text("Current Evolution: " + currentEvo, 600, 95);
   }
 }
 
