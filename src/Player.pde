@@ -22,7 +22,6 @@ class Player {
     isMovingRight = false;
     isMovingUp = false;
     isMovingDown = false;
-    image = loadImage("fatrat.png");
     
   }
 

@@ -579,7 +579,7 @@ void reset () {
   player.y = 500;
   player.exp = 0;
   player.maxExp = 100;
-  level = 14;
+  level = 1;
   wave = 1;
   totalKills = 0;
   totalDamage = 0;
