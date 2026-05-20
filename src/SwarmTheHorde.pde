@@ -6,7 +6,7 @@ PFont PixelFont;
 
 //images
 PImage fat, moldy, demon, chicken, ball, flabbergasted, logarithmic, seasoned, rotisserie, blurry, croissant, sleepy;
-PImage gamebar;
+PImage gamebar, levelup;
 
 //screens
 String screen = "title"; //title, game, charselect, settings, lose, win, pause, level up, evolution, credits, tutorial
@@ -90,25 +90,26 @@ void setup() {
   sleepy = loadImage("sleepyrat.png");
   
   gamebar = loadImage("gamebar.png");
+  levelup = loadImage("levelup.png");
 
   //button setup, parameters in order are text, x position, y position, width, height, normal color, hovering color, text size
   btnStart = new Button ("Start", 600, 500, 400, 100, #fa55a1, #f882b8, 95);
-  btnSettings = new Button("Settings", 600, 625, 200, 50, #48fbfc, #b4feff, 45);
-  btnQuit = new Button("Quit", 600, 700, 150, 50, #2f7542, #53b86e, 45);
-  btnBack = new Button("Back", 100, 50, 150, 50, #2f7542, #53b86e, 45);
-  btnRestart = new Button("Restart", 600, 500, 400, 100, #2f7542, #53b86e, 85);
-  btnMenu = new Button("Main Menu", 600, 625, 210, 50, #2f7542, #53b86e, 45);
-  btnResume = new Button("Resume", 600, 700, 210, 50, #2f7542, #53b86e, 45);
-  btnDamageUpgrade = new Button("Select", 755, 330, 100, 40, #2f7542, #53b86e, 35);
-  btnHealthUpgrade = new Button("Select", 755, 430, 100, 40, #2f7542, #53b86e, 35);
-  btnFRUpgrade = new Button("Select", 760, 530, 100, 40, #2f7542, #53b86e, 35);
-  btnSpeedUpgrade = new Button("Select", 730, 630, 100, 40, #2f7542, #53b86e, 35);
-  btnYippee = new Button("Yippee!", 600, 760, 120, 50, #2f7542, #53b86e, 35);
-  btnSkip = new Button("Skip", 600, 750, 120, 50, #2f7542, #53b86e, 40);
-  btnSelectA = new Button("Select", 850, 700, 120, 50, #2f7542, #53b86e, 40);
-  btnSelectH = new Button("Select", 350, 700, 120, 50, #2f7542, #53b86e, 40);
-  btnTutorial = new Button ("Tutorial", 600, 450, 400, 100, #2f7542, #53b86e, 95);
-  btnCredits = new Button ("Credits", 600, 650, 400, 100, #2f7542, #53b86e, 95);
+  btnSettings = new Button("Settings", 600, 625, 200, 50, #fa55a1, #f882b8, 45);
+  btnQuit = new Button("Quit", 600, 700, 150, 50, #fa55a1, #f882b8, 45);
+  btnBack = new Button("Back", 100, 50, 150, 50, #fa55a1, #f882b8, 45);
+  btnRestart = new Button("Restart", 600, 500, 400, 100, #fa55a1, #f882b8, 85);
+  btnMenu = new Button("Main Menu", 600, 625, 210, 50, #fa55a1, #f882b8, 45);
+  btnResume = new Button("Resume", 600, 700, 210, 50, #fa55a1, #f882b8, 45);
+  btnDamageUpgrade = new Button("Select", 735, 330, 80, 30, #fa55a1, #f882b8, 25);
+  btnHealthUpgrade = new Button("Select", 735, 430, 80, 30, #fa55a1, #f882b8, 25);
+  btnFRUpgrade = new Button("Select", 730, 530, 80, 30, #fa55a1, #f882b8, 25);
+  btnSpeedUpgrade = new Button("Select", 720, 630, 80, 30, #fa55a1, #f882b8, 25);
+  btnYippee = new Button("Yippee!", 600, 755, 120, 40, #fa55a1, #f882b8, 35);
+  btnSkip = new Button("Skip", 600, 730, 120, 50, #fa55a1, #f882b8, 40);
+  btnSelectA = new Button("Select", 850, 700, 120, 50, #fa55a1, #f882b8, 40);
+  btnSelectH = new Button("Select", 350, 700, 120, 50, #fa55a1, #f882b8, 40);
+  btnTutorial = new Button ("Tutorial", 600, 450, 400, 100, #fa55a1, #f882b8, 95);
+  btnCredits = new Button ("Credits", 600, 650, 400, 100, #fa55a1, #f882b8, 95);
 }
 
 void draw() {
@@ -350,13 +351,11 @@ void gameScreen() {
 
 void levelUp() {
   isPaused = true;
-  fill(255);
-  rect(600, 500, 450, 600, 20);
+  image(levelup, 600, 500);
   fill(0);
   textSize(50);
-  text("Level Up!", 600, 230);
-  line(375, 275, 825, 275);
-  textSize(30);
+  text("Level Up!", 600, 260);
+  textSize(25);
   text("+2 Damage" + " " + "(" + playerDamage + " " + "-" + " " + (playerDamage + 2) + ")", 535, 330);
   text("+5 Health" + " " + "(" + player.maxHealth + " " + "-" + " " + (player.maxHealth + 5) + ")", 540, 430);
   text("-0.03 Fire Rate" + " " + "(" + (pTime.totalTime/1000) + " " + "-" + " " + ((pTime.totalTime - 30)/1000) + ")", 548, 530);
@@ -372,12 +371,10 @@ void levelUp() {
 
 void evolution() {
   isPaused = true;
-  fill(255);
-  rect(600, 500, 450, 600, 20);
+  image(levelup, 600, 500);
   fill(0);
   textSize(50);
-  text("New Evolution!", 600, 235);
-  line(375, 275, 825, 275);
+  text("New Evolution!", 600, 260);
   textSize(40);
   if (player.character == "hank") {
     if (level == 15) {
@@ -582,7 +579,7 @@ void reset () {
   player.y = 500;
   player.exp = 0;
   player.maxExp = 100;
-  level = 1;
+  level = 14;
   wave = 1;
   totalKills = 0;
   totalDamage = 0;

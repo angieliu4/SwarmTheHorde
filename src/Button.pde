@@ -25,8 +25,8 @@ class Button {
     } else {
       fill(c1);
     }
-    stroke(#154f25);
-    strokeWeight(5);
+    stroke(0);
+    strokeWeight(2.5);
     rect(x, y, w, h, 25);
     fill(255);
     textSize(textsize);
