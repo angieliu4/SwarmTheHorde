@@ -15,10 +15,14 @@ String screen = "title"; //title, game, charselect, settings, lose, win, pause, 
 int wave = 1;
 int level = 1;
 
-//game over switch and pause switch
+
 boolean isGameOver = false;
 boolean isPaused = false;
 boolean gameAlreadyPlayed = false;
+boolean isPiercing = false;
+boolean isPiercingThrice = false;
+boolean hasPierced = false;
+
 
 //random enemy generation
 int randEnemy;
@@ -38,6 +42,7 @@ float foodHeal = 50; //tracker for food heal amount
 float totalDamage = 0;
 int totalKills = 0;
 String currentEvo;
+int pjctHitCount = 0;
 
 //enemies
 ArrayList<Enemy> enemies = new ArrayList<Enemy>();
@@ -285,11 +290,29 @@ void gameScreen() {
               foods.add(new Food(enemy.x + 20, enemy.y + 20));
             }
           }
-          projectiles.remove(pjct);
+          if (isPiercing) {
+            if (hasPierced == false) {
+              hasPierced = true;
+            } else {
+              projectiles.remove(pjct);
+              hasPierced = false;
+            }
+          } else if (isPiercingThrice) {
+              pjctHitCount += 1;
+              if (pjctHitCount == 3) {
+                projectiles.remove(pjct);
+                pjctHitCount = 0;
+              }
+            } else {
+              projectiles.remove(pjct);
+            }
+          }
+          
         }
+        pjct.display();
       }
-      pjct.display();
     }
+
 
     //rendering food and check for intersection
     for (int f = 0; f < foods.size(); f++) {
@@ -347,7 +370,7 @@ void gameScreen() {
     textSize(30);
     text("Current Evolution: " + currentEvo, 600, 95);
   }
-}
+
 
 void levelUp() {
   isPaused = true;
@@ -382,10 +405,12 @@ void evolution() {
       image(flabbergasted, 600, 490);
       flabbergasted.resize(140, 140);
       textSize(30);
-      text("+15 Damage", 600, 625);
+      text("+15 Damage", 600, 630);
       text("-0.25 Fire Rate", 600, 665);
       text("+20 Health", 600, 700);
+      text("Projectiles pierce twice!", 600, 600);
       currentEvo = "Flabbergasted Rat";
+      isPiercing = true;
     } else if (level == 25) {
       text("Ball Rat", 600, 350);
       image(ball, 600, 490);
@@ -409,6 +434,9 @@ void evolution() {
       text("+30 Damage", 600, 625);
       text("-0.25 Fire Rate", 600, 665);
       text("+25 Health", 600, 700);
+      text("Projectiles Pierce Thrice!", 600, 600);
+      isPiercing = false;
+      isPiercingThrice = true;
       currentEvo = "Logarithmic Rat";
     } else if (level == 55) {
       text("Demon Rat", 600, 350);
@@ -444,6 +472,8 @@ void evolution() {
       text("+10 Damage", 600, 625);
       text("-0.35 Fire Rate", 600, 665);
       text("+15 Health", 600, 700);
+      text("Projectiles Pierce Twice!", 600, 600);
+      isPiercing = true;
       currentEvo = "Blurry Rat";
     } else if (level == 45) {
       text("Croissant Rat", 600, 350);
@@ -583,6 +613,10 @@ void reset () {
   wave = 1;
   totalKills = 0;
   totalDamage = 0;
+  isPiercing = false;
+  isPiercingThrice = false;
+  pjctHitCount = 0;
+  hasPierced = false;
   projectiles.clear();
   enemies.clear();
   exps.clear();
