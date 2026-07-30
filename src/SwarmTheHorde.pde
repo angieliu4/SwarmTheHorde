@@ -5,8 +5,8 @@
 PFont PixelFont;
 
 //images
-PImage fat, moldy, demon, chicken, ball, flabbergasted, logarithmic, seasoned, rotisserie, blurry, croissant, sleepy;
-PImage gamebar, levelup;
+PImage fat, moldy, demon, chicken, ball, flabbergasted, logarithmic, seasoned, angel, blurry, croissant, sleepy;
+PImage gamebar, levelup, titleborder;
 
 //screens
 String screen = "title"; //title, game, charselect, settings, lose, win, pause, level up, evolution, credits, tutorial
@@ -91,17 +91,18 @@ void setup() {
   seasoned = loadImage("seasonedrat.png");
   blurry = loadImage("blurryrat.png");
   croissant = loadImage("croissantrat.png");
-  rotisserie = loadImage("rotisserierat.png");
+  angel = loadImage("angelrat.png");
   sleepy = loadImage("sleepyrat.png");
   
   gamebar = loadImage("gamebar.png");
   levelup = loadImage("levelup.png");
+  titleborder = loadImage("titleborder.png");
 
   //button setup, parameters in order are text, x position, y position, width, height, normal color, hovering color, text size
   btnStart = new Button ("Start", 600, 500, 400, 100, #fa55a1, #f882b8, 95);
-  btnSettings = new Button("Settings", 600, 625, 200, 50, #fa55a1, #f882b8, 45);
+  btnSettings = new Button("Extras", 600, 625, 200, 50, #fa55a1, #f882b8, 45);
   btnQuit = new Button("Quit", 600, 700, 150, 50, #fa55a1, #f882b8, 45);
-  btnBack = new Button("Back", 100, 50, 150, 50, #fa55a1, #f882b8, 45);
+  btnBack = new Button("Back", 110, 50, 150, 50, #fa55a1, #f882b8, 45);
   btnRestart = new Button("Restart", 600, 500, 400, 100, #fa55a1, #f882b8, 85);
   btnMenu = new Button("Main Menu", 600, 625, 210, 50, #fa55a1, #f882b8, 45);
   btnResume = new Button("Resume", 600, 700, 210, 50, #fa55a1, #f882b8, 45);
@@ -158,6 +159,7 @@ void draw() {
 
 void startScreen() {
   background(255);
+  image(titleborder, 600, 500);
 
   fill(0);
   textSize(130);
@@ -174,6 +176,7 @@ void startScreen() {
 
 void characterSelect() {
   background(255);
+  image(titleborder, 600, 500);
 
   fill(0);
   textSize(100);
@@ -408,7 +411,7 @@ void evolution() {
       text("+15 Damage", 600, 630);
       text("-0.25 Fire Rate", 600, 665);
       text("+20 Health", 600, 700);
-      text("Projectiles pierce twice!", 600, 600);
+      text("Projectiles Hit Twice!", 600, 600);
       currentEvo = "Flabbergasted Rat";
       isPiercing = true;
     } else if (level == 25) {
@@ -434,7 +437,7 @@ void evolution() {
       text("+30 Damage", 600, 625);
       text("-0.25 Fire Rate", 600, 665);
       text("+25 Health", 600, 700);
-      text("Projectiles Pierce Thrice!", 600, 600);
+      text("Projectiles Hit Thrice!", 600, 600);
       isPiercing = false;
       isPiercingThrice = true;
       currentEvo = "Logarithmic Rat";
@@ -472,7 +475,7 @@ void evolution() {
       text("+10 Damage", 600, 625);
       text("-0.35 Fire Rate", 600, 665);
       text("+15 Health", 600, 700);
-      text("Projectiles Pierce Twice!", 600, 600);
+      text("Projectiles Hit Twice!", 600, 600);
       isPiercing = true;
       currentEvo = "Blurry Rat";
     } else if (level == 45) {
@@ -484,9 +487,9 @@ void evolution() {
       text("+15 Health", 600, 700);
       currentEvo = "Croissant Rat";
     } else if (level == 55) {
-      text("Rotisserie Rat", 600, 350);
-      image(rotisserie, 600, 490);
-      rotisserie.resize(140, 140);
+      text("Angel Rat", 600, 350);
+      image(angel, 600, 490);
+      angel.resize(140, 140);
       text("+20 Damage", 600, 625);
       text("-0.45 Fire Rate", 600, 665);
       text("+20 Health", 600, 700);
@@ -499,11 +502,12 @@ void evolution() {
 
 void settingsScreen() {
   background(255);
+  image(titleborder, 600, 500);
 
   fill(0);
   textSize(130);
   //temp
-  text("Settings", 600, 130);
+  text("Extras", 600, 130);
 
   //rendering buttons
   btnBack.display();
@@ -513,6 +517,7 @@ void settingsScreen() {
 
 void tutorialScreen() {
   background(255);
+  image(titleborder, 600, 500);
 
   fill(0);
   textSize(130);
@@ -531,13 +536,18 @@ void tutorialScreen() {
 
 void creditsScreen() {
   background(255);
+  image(titleborder, 600, 500);
 
   fill(0);
   textSize(130);
   //temp
   text("Credits", 600, 130);
   textSize(70);
-  text("Made by Angie Liu!", 600, 500);
+  text("Made by Angie Liu!", 600, 400);
+  textSize(40);
+  text("In loving memory of Apricot.\n 2021 - 2026. \n May you rest in peace and fly high.", 600, 600);
+  angel.resize(200, 200);
+  image(angel, 600, 750);
 
   //rendering buttons
   btnBack.display();
@@ -545,6 +555,7 @@ void creditsScreen() {
 
 void pauseScreen() {
   background(255);
+  image(titleborder, 600, 500);
 
   fill(0);
   textSize(130);
@@ -558,6 +569,7 @@ void pauseScreen() {
 
 void gameOver() {
   background(255);
+  image(titleborder, 600, 500);
 
   fill(0);
   textSize(100);
@@ -573,6 +585,7 @@ void gameOver() {
 
 void win() {
   background(255);
+  image(titleborder, 600, 500);
 
   fill(0);
   textSize(100);

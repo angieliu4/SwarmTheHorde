@@ -53,7 +53,7 @@ class Player {
       } else if (level == 45) {
         image = loadImage("croissantrat.png");
       } else if (level == 55) {
-        image = loadImage("rotisserierat.png");
+        image = loadImage("angelrat.png");
       }
     }
     image(image, x, y);
