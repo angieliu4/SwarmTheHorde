@@ -5,8 +5,8 @@
 PFont PixelFont;
 
 //images
-PImage fat, moldy, demon, chicken, ball, flabbergasted, logarithmic, seasoned, angel, blurry, croissant, sleepy;
-PImage gamebar, levelup, titleborder;
+PImage fat, moldy, demon, chicken, ball, flabbergasted, logarithmic, seasoned, angel, blurry, croissant, sleepy, fat1, moldy1, demon1, chicken1, ball1, flabbergasted1, logarithmic1, seasoned1, angel1, blurry1, croissant1, sleepy1;
+PImage gamebar, levelup, titleborder, gametitle;
 
 //screens
 String screen = "title"; //title, game, charselect, settings, lose, win, pause, level up, evolution, credits, tutorial
@@ -94,9 +94,24 @@ void setup() {
   angel = loadImage("angelrat.png");
   sleepy = loadImage("sleepyrat.png");
   
+  //images just for the title screen, i have no better solution T_T
+  fat1 = loadImage("fatrat.png");
+  demon1 = loadImage("demonrat.png");
+  chicken1 = loadImage("chickenrat.png");
+  ball1 = loadImage("ballrat.png");
+  flabbergasted1 = loadImage("flabberghastedrat.png");
+  logarithmic1 = loadImage("logarithmicrat.png");
+  moldy1 = loadImage("moldyrat.png");
+  seasoned1 = loadImage("seasonedrat.png");
+  blurry1 = loadImage("blurryrat.png");
+  croissant1 = loadImage("croissantrat.png");
+  angel1 = loadImage("angelrat.png");
+  sleepy1 = loadImage("sleepyrat.png");
+  
   gamebar = loadImage("gamebar.png");
   levelup = loadImage("levelup.png");
   titleborder = loadImage("titleborder.png");
+  gametitle = loadImage("gametitle.png");
 
   //button setup, parameters in order are text, x position, y position, width, height, normal color, hovering color, text size
   btnStart = new Button ("Start", 600, 500, 400, 100, #fa55a1, #f882b8, 95);
@@ -160,13 +175,24 @@ void draw() {
 void startScreen() {
   background(255);
   image(titleborder, 600, 500);
+  image(gametitle, 600, 130);
 
   fill(0);
-  textSize(130);
-  //temp
-  text("Swarm the Horde!", 600, 130);
-  textSize(40);
-  text("Humanity's last chances are... guinea pigs!?", 600, 220);
+  textSize(120);
+  textSize(35);
+  text("Humanity's last chance is... guinea pigs!?", 600, 230);
+  image(flabbergasted1, 600, 350, 125, 125);
+  image(fat1, 600, 900);
+  image(moldy1, 500, 900);
+  image(ball1, 400, 900);
+  image(blurry1, 300, 900);
+  image(demon1, 200, 900);
+  image(angel1, 100, 900);
+  image(sleepy1, 700, 900);
+  image(logarithmic1, 800, 900);
+  image(seasoned1, 900, 900);
+  image(chicken1, 1000, 900);
+  image(croissant1, 1100, 900);
 
   //rendering buttons
   btnStart.display();
