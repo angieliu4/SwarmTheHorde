@@ -1,3 +1,4 @@
+import processing.sound.*;
 
 //Main class
 
@@ -7,6 +8,12 @@ PFont PixelFont;
 //images
 PImage fat, moldy, demon, chicken, ball, flabbergasted, logarithmic, seasoned, angel, blurry, croissant, sleepy, fat1, moldy1, demon1, chicken1, ball1, flabbergasted1, logarithmic1, seasoned1, angel1, blurry1, croissant1, sleepy1;
 PImage gamebar, levelup, titleborder, gametitle;
+
+//sounds
+//music
+SoundFile SillyRat;
+//effects
+SoundFile buttonclick, playclick, projectile, enemyhit, playerhit, levelUp, pickupexp, pickupfood;
 
 //screens
 String screen = "title"; //title, game, charselect, settings, lose, win, pause, level up, evolution, credits, tutorial
@@ -79,7 +86,7 @@ void setup() {
   pTime = new Timer(0); //will get set when player chooses character (in mouse clicked)
   enemyTime = new Timer(3000);
   waveTime = new Timer(60000);
-  
+
   //image setup
   fat = loadImage("fatrat.png");
   demon = loadImage("demonrat.png");
@@ -93,7 +100,7 @@ void setup() {
   croissant = loadImage("croissantrat.png");
   angel = loadImage("angelrat.png");
   sleepy = loadImage("sleepyrat.png");
-  
+
   //images just for the title screen, i have no better solution T_T
   fat1 = loadImage("fatrat.png");
   demon1 = loadImage("demonrat.png");
@@ -107,11 +114,23 @@ void setup() {
   croissant1 = loadImage("croissantrat.png");
   angel1 = loadImage("angelrat.png");
   sleepy1 = loadImage("sleepyrat.png");
-  
+
   gamebar = loadImage("gamebar.png");
   levelup = loadImage("levelup.png");
   titleborder = loadImage("titleborder.png");
   gametitle = loadImage("gametitle.png");
+
+  //sound setup
+  SillyRat = new SoundFile(this, "SillyRat.wav");
+  SillyRat.loop();
+  buttonclick = new SoundFile(this, "buttonclick.wav");
+  playclick = new SoundFile(this, "playclick.wav");
+  projectile = new SoundFile(this, "projectile.wav");
+  enemyhit = new SoundFile(this, "enemyhit.wav");
+  playerhit = new SoundFile(this, "playerhit.wav");
+  levelUp = new SoundFile(this, "levelup.wav");
+  pickupexp = new SoundFile(this, "pickupexp.wav");
+  pickupfood = new SoundFile(this, "pickupfood.wav");
 
   //button setup, parameters in order are text, x position, y position, width, height, normal color, hovering color, text size
   btnStart = new Button ("Start", 600, 500, 400, 100, #fa55a1, #f882b8, 95);
@@ -235,13 +254,13 @@ void gameScreen() {
     //rendering player
     player.display();
 
-    
+
 
     if (player.health <= 0) {
       isGameOver = true;
       screen = "lose";
     }
-    
+
     if (wave == 16) {
       isPaused = true;
       screen = "win";
@@ -285,6 +304,11 @@ void gameScreen() {
     //rendering enemies
     for (int j = 0; j < enemies.size(); j++) {
       Enemy enemy = enemies.get(j);
+      if (enemy.intersect(player)) {
+        if (playerhit.isPlaying()==false) {
+          playerhit.play();
+        }
+      }
       enemy.display();
     }
 
@@ -292,6 +316,9 @@ void gameScreen() {
     if (pTime.isFinished()) {
       projectiles.add(new Projectile(player.x, player.y, mouseX, mouseY));
       pTime.start();
+      if (projectile.isPlaying()==false) {
+        projectile.play();
+      }
     }
 
     //checking for enemy/projectile collision, projectile rendering, exp spawning
@@ -305,15 +332,17 @@ void gameScreen() {
         Enemy enemy = enemies.get(j);
         if (pjct.intersect(enemy)) {
           enemy.health -= playerDamage;
+          totalDamage += playerDamage;
+
           if (enemy.health <= 0) {
             totalKills += 1;
-            if(wave >= 6) {
+            if (wave >= 6) {
               exps.add(new Exp(enemy.x, enemy.y, "tier2"));
             } else {
               exps.add(new Exp(enemy.x, enemy.y, "tier1"));
             }
             enemies.remove(enemy);
-            
+
             randFood = int(random(1, 51)); //has a 1/50 chance to spawn food when enemy dies
             if (randFood == 1) {
               foods.add(new Food(enemy.x + 20, enemy.y + 20));
@@ -327,78 +356,87 @@ void gameScreen() {
               hasPierced = false;
             }
           } else if (isPiercingThrice) {
-              pjctHitCount += 1;
-              if (pjctHitCount == 3) {
-                projectiles.remove(pjct);
-                pjctHitCount = 0;
-              }
-            } else {
+            pjctHitCount += 1;
+            if (pjctHitCount == 3) {
               projectiles.remove(pjct);
+              pjctHitCount = 0;
             }
-          }
-          
-        }
-        pjct.display();
-      }
-    }
-
-
-    //rendering food and check for intersection
-    for (int f = 0; f < foods.size(); f++) {
-      Food food = foods.get(f);
-      food.display();
-      if (food.intersect(player)) {
-        foods.remove(food);
-        player.health += foodHeal;
-        println(player.health);
-      }
-    }
-
-    //rendering exp, player level up
-    for (int k = 0; k < exps.size(); k++) {
-      Exp exp = exps.get(k);
-      exp.display();
-      if (exp.intersect(player)) {
-        exps.remove(exp);
-        println("Exp:" + player.exp);
-        println("Max Exp:" + player.maxExp);
-        //player needs more exp to level up the higher their level is
-        if (player.exp >= player.maxExp) {
-          player.exp -= player.maxExp;
-          level += 1;
-          player.maxExp += 150;
-          if (level == 15 || level == 25 || level == 35 || level == 45 || level == 55) {
-            screen = "evolution";
           } else {
-            screen = "level up";
+            projectiles.remove(pjct);
           }
-          
+          if (enemyhit.isPlaying()==false) {
+            enemyhit.play();
+          }
         }
       }
+      pjct.display();
     }
-
-    //wave timer
-    if (waveTime.isFinished()) {
-      wave += 1;
-      enemyTime.totalTime -= 200;
-      waveTime.start();
-    }
-    
-    
-
-    //gamebar
-    fill(#fccce9);
-    rectMode(CENTER);
-    image(gamebar, 600, 62);
-
-    fill(0);
-    textSize(60);
-    text("Wave: " + wave, 150, 60);
-    text("Level: " + level, 600, 60);
-    text("Kills: " + totalKills, 1050, 60);
-    textSize(30);
-    text("Current Evolution: " + currentEvo, 600, 95);
   }
+
+
+  //rendering food and check for intersection
+  for (int f = 0; f < foods.size(); f++) {
+    Food food = foods.get(f);
+    food.display();
+    if (food.intersect(player)) {
+      foods.remove(food);
+      player.health += foodHeal;
+      if (pickupfood.isPlaying()==false) {
+        pickupfood.play();
+      }
+    }
+  }
+
+  //rendering exp, player level up
+  for (int k = 0; k < exps.size(); k++) {
+    Exp exp = exps.get(k);
+    exp.display();
+    if (exp.intersect(player)) {
+      exps.remove(exp);
+      println("Exp:" + player.exp);
+      println("Max Exp:" + player.maxExp);
+      //player needs more exp to level up the higher their level is
+      if (player.exp >= player.maxExp) {
+        player.exp -= player.maxExp;
+        level += 1;
+        player.maxExp += 150;
+        if (level == 15 || level == 25 || level == 35 || level == 45 || level == 55) {
+          screen = "evolution";
+        } else {
+          screen = "level up";
+        }
+        if (levelUp.isPlaying()==false) {
+          levelUp.play();
+        }
+      }
+      if(pickupexp.isPlaying()==false) {
+        pickupexp.play();
+      }
+    }
+  }
+
+  //wave timer
+  if (waveTime.isFinished()) {
+    wave += 1;
+    enemyTime.totalTime -= 200;
+    waveTime.start();
+  }
+
+
+
+  //gamebar
+  fill(#fccce9);
+  rectMode(CENTER);
+  image(gamebar, 600, 62);
+
+  fill(0);
+  textSize(60);
+  text("Wave: " + wave, 150, 60);
+  text("Level: " + level, 600, 60);
+  text("Kills: " + totalKills, 1050, 60);
+  textSize(30);
+  text("Current Evolution: " + currentEvo, 600, 95);
+}
 
 
 void levelUp() {
@@ -602,7 +640,13 @@ void gameOver() {
   //temp
   text("You're DEAD.", 600, 110);
   textSize(30);
-  text("The world mourns a great hero...", 600, 200);
+  text("The world mourns a great hero...", 600, 160);
+  textSize(45);
+  text("Evolution: " + currentEvo, 600, 240);
+  text("Damage: " + totalDamage, 600, 280);
+  text("Kills: " + totalKills, 600, 320);
+  text("Wave: " + wave, 600, 360);
+  text("Level: " + level, 600, 400);
 
   //rendering buttons
   btnRestart.display();
@@ -618,7 +662,13 @@ void win() {
   //temp
   text("You have made history!", 600, 110);
   textSize(30);
-  text("As the world's first guinea pig to stop the end of human exsistance, you will be honored, Hero!", 600, 200);
+  text("As the world's first guinea pig to stop the end of human exsistance, you will be honored, Hero!", 600, 160);
+  textSize(45);
+  text("Evolution: " + currentEvo, 600, 240);
+  text("Damage: " + totalDamage, 600, 280);
+  text("Kills: " + totalKills, 600, 320);
+  text("Wave: " + wave, 600, 360);
+  text("Level: " + level, 600, 400);
 
   //rendering buttons
   btnRestart.display();
@@ -673,9 +723,15 @@ void mousePressed() {
       if (gameAlreadyPlayed) {
         reset();
       }
+      if (playclick.isPlaying()==false) {
+        playclick.play();
+      }
       break;
     } else if (btnSettings.clicked()) {
       screen = "settings";
+      if (buttonclick.isPlaying()==false) {
+        buttonclick.play();
+      }
       break;
     } else if (btnQuit.clicked()) {
       exit();
@@ -683,22 +739,37 @@ void mousePressed() {
   case "settings":
     if (btnBack.clicked()) {
       screen = "title";
+      if (buttonclick.isPlaying()==false) {
+        buttonclick.play();
+      }
       break;
     } else if (btnTutorial.clicked()) {
       screen = "tutorial";
+      if (buttonclick.isPlaying()==false) {
+        buttonclick.play();
+      }
       break;
     } else if (btnCredits.clicked()) {
       screen = "credits";
+      if (buttonclick.isPlaying()==false) {
+        buttonclick.play();
+      }
       break;
     }
   case "tutorial":
     if (btnBack.clicked()) {
       screen = "settings";
+      if (buttonclick.isPlaying()==false) {
+        buttonclick.play();
+      }
       break;
     }
   case "credits":
     if (btnBack.clicked()) {
       screen = "settings";
+      if (buttonclick.isPlaying()==false) {
+        buttonclick.play();
+      }
       break;
     }
   case "charselect":
@@ -707,48 +778,78 @@ void mousePressed() {
       player.character = "apricot";
       reset();
       gameAlreadyPlayed = true;
+      if (buttonclick.isPlaying()==false) {
+        buttonclick.play();
+      }
       break;
     } else if (btnSelectH.clicked()) {
       screen = "game";
       player.character = "hank";
       reset();
       gameAlreadyPlayed = true;
+      if (buttonclick.isPlaying()==false) {
+        buttonclick.play();
+      }
       break;
     } else if (btnBack.clicked()) {
       screen = "title";
+      if (buttonclick.isPlaying()==false) {
+        buttonclick.play();
+      }
       break;
     }
   case "lose":
     if (btnRestart.clicked()) {
       screen = "game";
       reset();
+      if (buttonclick.isPlaying()==false) {
+        buttonclick.play();
+      }
       break;
     } else if (btnMenu.clicked()) {
       screen = "title";
       isGameOver = false;
+      if (buttonclick.isPlaying()==false) {
+        buttonclick.play();
+      }
       break;
     }
   case "win":
     if (btnRestart.clicked()) {
       screen = "game";
       reset();
+      if (buttonclick.isPlaying()==false) {
+        buttonclick.play();
+      }
       break;
     } else if (btnMenu.clicked()) {
       screen = "title";
+      if (buttonclick.isPlaying()==false) {
+        buttonclick.play();
+      }
       break;
     }
   case "pause":
     if (btnRestart.clicked()) {
       screen = "game";
       reset();
+      if (buttonclick.isPlaying()==false) {
+        buttonclick.play();
+      }
       break;
     } else if (btnMenu.clicked()) {
       screen = "title";
       isGameOver = false;
+      if (buttonclick.isPlaying()==false) {
+        buttonclick.play();
+      }
       break;
     } else if (btnResume.clicked()) {
       screen = "game";
       isPaused = false;
+      if (buttonclick.isPlaying()==false) {
+        buttonclick.play();
+      }
       break;
     }
   case "level up":
@@ -756,6 +857,9 @@ void mousePressed() {
       screen = "game";
       isPaused = false;
       playerDamage += 2;
+      if (buttonclick.isPlaying()==false) {
+        buttonclick.play();
+      }
       break;
     } else if (btnHealthUpgrade.clicked()) {
       screen = "game";
@@ -764,20 +868,32 @@ void mousePressed() {
         player.health += 5;
       }
       player.maxHealth += 5;
+      if (buttonclick.isPlaying()==false) {
+        buttonclick.play();
+      }
       break;
     } else if (btnFRUpgrade.clicked()) {
       screen = "game";
       isPaused = false;
       pTime.totalTime -= 30;
+      if (buttonclick.isPlaying()==false) {
+        buttonclick.play();
+      }
       break;
     } else if (btnSpeedUpgrade.clicked()) {
       screen = "game";
       isPaused = false;
       player.speed += 0.3;
+      if (buttonclick.isPlaying()==false) {
+        buttonclick.play();
+      }
       break;
     } else if (btnSkip.clicked()) {
       screen = "game";
       isPaused = false;
+      if (buttonclick.isPlaying()==false) {
+        buttonclick.play();
+      }
       break;
     }
   case "evolution":
@@ -834,6 +950,9 @@ void mousePressed() {
       println(player.maxHealth);
       println(pTime.totalTime);
       println(playerDamage);
+      if (buttonclick.isPlaying()==false) {
+        buttonclick.play();
+      }
       break;
     }
   }
