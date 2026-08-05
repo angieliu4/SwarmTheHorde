@@ -11,7 +11,7 @@ PImage gamebar, levelup, titleborder, gametitle;
 
 //sounds
 //music
-SoundFile SillyRat;
+SoundFile SillyRat, LastChance;
 //effects
 SoundFile buttonclick, playclick, projectile, enemyhit, playerhit, levelUp, pickupexp, pickupfood;
 
@@ -64,7 +64,7 @@ ArrayList<Exp> exps = new ArrayList<Exp>();
 ArrayList<Food> foods = new ArrayList<Food>();
 
 //buttons
-Button btnStart, btnSettings, btnQuit, btnBack, btnMenu, btnRestart, btnResume, btnDamageUpgrade, btnHealthUpgrade, btnFRUpgrade, btnSpeedUpgrade, btnYippee, btnSkip, btnSelectA, btnSelectH, btnTutorial, btnCredits;
+Button btnStart, btnSettings, btnQuit, btnBack, btnMenu, btnRestart, btnResume, btnPause, btnDamageUpgrade, btnHealthUpgrade, btnFRUpgrade, btnSpeedUpgrade, btnYippee, btnSkip, btnSelectA, btnSelectH, btnTutorial, btnCredits;
 
 void setup() {
   size(1200, 1000);
@@ -123,6 +123,7 @@ void setup() {
   //sound setup
   SillyRat = new SoundFile(this, "SillyRat.wav");
   SillyRat.loop();
+  LastChance = new SoundFile(this, "LastChance.wav");
   buttonclick = new SoundFile(this, "buttonclick.wav");
   playclick = new SoundFile(this, "playclick.wav");
   projectile = new SoundFile(this, "projectile.wav");
@@ -140,6 +141,7 @@ void setup() {
   btnRestart = new Button("Restart", 600, 500, 400, 100, #fa55a1, #f882b8, 85);
   btnMenu = new Button("Main Menu", 600, 625, 210, 50, #fa55a1, #f882b8, 45);
   btnResume = new Button("Resume", 600, 700, 210, 50, #fa55a1, #f882b8, 45);
+  btnPause = new Button("Pause", 1100, 170, 150, 50, #fa55a1, #f882b8, 45);
   btnDamageUpgrade = new Button("Select", 735, 330, 80, 30, #fa55a1, #f882b8, 25);
   btnHealthUpgrade = new Button("Select", 735, 430, 80, 30, #fa55a1, #f882b8, 25);
   btnFRUpgrade = new Button("Select", 730, 530, 80, 30, #fa55a1, #f882b8, 25);
@@ -427,6 +429,9 @@ void gameScreen() {
   //gamebar
   fill(#fccce9);
   rectMode(CENTER);
+  fill(255);
+  noStroke();
+  rect(600, 62, 1200, 124);
   image(gamebar, 600, 62);
 
   fill(0);
@@ -436,6 +441,9 @@ void gameScreen() {
   text("Kills: " + totalKills, 1050, 60);
   textSize(30);
   text("Current Evolution: " + currentEvo, 600, 95);
+  
+  //pause button
+  btnPause.display();
 }
 
 
@@ -623,7 +631,15 @@ void pauseScreen() {
 
   fill(0);
   textSize(130);
-  text("Paused", 600, 130);
+  text("Paused", 600, 110);
+  textSize(30);
+  text("Don't keep them waiting too long.", 600, 160);
+  textSize(45);
+  text("Evolution: " + currentEvo, 600, 240);
+  text("Damage: " + totalDamage, 600, 280);
+  text("Kills: " + totalKills, 600, 320);
+  text("Wave: " + wave, 600, 360);
+  text("Level: " + level, 600, 400);
 
   //rendering buttons
   btnRestart.display();
@@ -781,6 +797,8 @@ void mousePressed() {
       if (buttonclick.isPlaying()==false) {
         buttonclick.play();
       }
+      SillyRat.stop();
+      LastChance.loop();
       break;
     } else if (btnSelectH.clicked()) {
       screen = "game";
@@ -790,6 +808,8 @@ void mousePressed() {
       if (buttonclick.isPlaying()==false) {
         buttonclick.play();
       }
+      SillyRat.stop();
+      LastChance.loop();
       break;
     } else if (btnBack.clicked()) {
       screen = "title";
@@ -812,6 +832,8 @@ void mousePressed() {
       if (buttonclick.isPlaying()==false) {
         buttonclick.play();
       }
+      LastChance.stop();
+      SillyRat.loop();
       break;
     }
   case "win":
@@ -827,6 +849,8 @@ void mousePressed() {
       if (buttonclick.isPlaying()==false) {
         buttonclick.play();
       }
+      LastChance.stop();
+      SillyRat.loop();
       break;
     }
   case "pause":
@@ -843,6 +867,8 @@ void mousePressed() {
       if (buttonclick.isPlaying()==false) {
         buttonclick.play();
       }
+      LastChance.stop();
+      SillyRat.loop();
       break;
     } else if (btnResume.clicked()) {
       screen = "game";
@@ -955,6 +981,15 @@ void mousePressed() {
       }
       break;
     }
+  case "game":
+    if(btnPause.clicked()) {
+      screen = "pause";
+      isPaused = true;
+      if (buttonclick.isPlaying()==false) {
+        buttonclick.play();
+      }
+      break;
+    }
   }
 }
 
@@ -976,6 +1011,9 @@ void keyPressed() {
     if (keyCode == 9) {
       isPaused = true;
       screen = "pause";
+      if(buttonclick.isPlaying()==false) {
+        buttonclick.play();
+      }
     }
   }
 }
