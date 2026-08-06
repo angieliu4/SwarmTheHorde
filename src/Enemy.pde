@@ -24,17 +24,17 @@ class Enemy {
       w = 25;
       h = 65;
       damage = 2;
-      health = 300;
+      health = 150;
     } else if (type == "black") {
       w = 25;
       h = 45;
       damage = 3;
-      health = 600;
+      health = 300;
     } else if (type == "pink") {
       w = 25;
       h = 35;
       damage = 4;
-      health = 1000;
+      health = 450;
     }
   }
 

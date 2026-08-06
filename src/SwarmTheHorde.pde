@@ -345,7 +345,7 @@ void gameScreen() {
             }
             enemies.remove(enemy);
 
-            randFood = int(random(1, 51)); //has a 1/50 chance to spawn food when enemy dies
+            randFood = int(random(1, 40)); //has a 1/40 chance to spawn food when enemy dies
             if (randFood == 1) {
               foods.add(new Food(enemy.x + 20, enemy.y + 20));
             }

@@ -14,7 +14,7 @@ class Exp {
     if (type == "tier1") {
       amount = 200;
     } else if (type == "tier2") {
-      amount = 400;
+      amount = 450;
     }
     
   }

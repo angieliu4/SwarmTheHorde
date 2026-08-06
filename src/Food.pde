@@ -3,6 +3,8 @@
 class Food {
   float x, y, w, h;
   String type;
+  
+  PImage carrot;
 
   Food(float x, float y) {
     this.x = x;
@@ -12,8 +14,8 @@ class Food {
   }
 
   void display() {
-    fill(#c4ff6b);
-    ellipse(x, y, w, h);
+    carrot = loadImage("carrot.png");
+    image(carrot, x, y);
   }
 
 
